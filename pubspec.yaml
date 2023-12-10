@@ -1,7 +1,8 @@
 name: arche
-description: "A new Flutter package project."
+description: "Arche is a Flutter/Dart library including utils to build applications."
 version: 0.0.1
-homepage:
+homepage: https://github.com/H2Sxxa/Arche
+repository: https://github.com/H2Sxxa/Arche
 
 environment:
   sdk: '>=3.2.2 <4.0.0'

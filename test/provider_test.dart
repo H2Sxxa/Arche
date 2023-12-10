@@ -15,8 +15,9 @@ class App extends StatelessWidget {
 
 void main() {
   test("Test provider", () {
-    singleton.provide(ArcheBus());
-    debugPrint((singleton.of<ArcheBus>()).toString());
+    ArcheBus().provide(ArcheConfig.memory());
+
+    debugPrint((singleton.of<ArcheBus>()).getConfig.toString());
   });
 
   test("Provider to widget", () {

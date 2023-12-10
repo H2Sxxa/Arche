@@ -3,10 +3,11 @@ import 'package:flutter/widgets.dart';
 
 class TypeProvider {
   static final Map _data = {};
-  void provide<T>(T instance) {
+  TypeProvider provide<T>(T instance) {
     if (!_data.containsKey(T.hashCode)) {
       _data[T.hashCode] = instance;
     }
+    return this;
   }
 
   void replace<T>(T instance) {

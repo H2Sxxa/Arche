@@ -1,7 +1,11 @@
 abstract mixin class KVIO<K, V> {
   Map<K, V> read();
   void write(K key, V value);
-  void writeAll(Map<K, V> m) {}
+  void writeAll(Map<K, V> m) {
+    for (var e in m.entries) {
+      write(e.key, e.value);
+    }
+  }
 
   V get(K key) {
     return read()[key]!;
