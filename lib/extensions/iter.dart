@@ -1,4 +1,4 @@
-import 'package:arche/abc/typed.dart';
+import 'package:arche/extensions/typedfuctions.dart';
 
 extension ListExt<T> on List<T> {
   List<T> addThen(T value) {
@@ -18,7 +18,17 @@ extension ListExt<T> on List<T> {
         insert(1 + 2 * i, separator);
       }
     }
+
     return this;
+  }
+
+  static List<R> generatefrom<T, R>(Iterable<T> input,
+      {FunctionFactory<T, R>? functionFactory}) {
+    List<R> res = [];
+    for (var e in input) {
+      res.add(functionFactory != null ? functionFactory(e) : e as R);
+    }
+    return res;
   }
 }
 
@@ -36,9 +46,9 @@ extension IterExt<T> on Iterable<T> {
     return true;
   }
 
-  bool satisify(Test<T> test) {
+  bool satisify(Predicate<T> predicate) {
     for (var i in this) {
-      if (!test(i)) {
+      if (!predicate.test(i)) {
         return false;
       }
     }

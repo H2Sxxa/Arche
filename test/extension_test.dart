@@ -11,4 +11,11 @@ void main() {
     debugPrintln([true, true].all());
     debugPrintln([true, false].all());
   });
+
+  test("Test ListGenerator", () {
+    debugPrintln(ListExt.generatefrom(
+      [1, 2, 3],
+      functionFactory: (p0) => ++p0,
+    ));
+  });
 }

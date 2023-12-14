@@ -56,7 +56,7 @@ class Subordinate {
     return value;
   }
 
-  T find<T>() {
+  T relevant<T>() {
     return provider!.of<T>();
   }
 }
