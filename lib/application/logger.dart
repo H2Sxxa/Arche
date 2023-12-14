@@ -1,4 +1,5 @@
 import 'package:arche/arche.dart';
+import 'package:flutter/widgets.dart';
 
 enum Loglevel { info, warn, error, debug }
 
@@ -17,7 +18,23 @@ class Log {
 class ArcheLogger extends Subordinate {
   @override
   TypeProvider get provider => singleton.provideof(instance: ArcheBus());
+  late Translator<Loglevel, Color> colorTranslator;
   final List<Log> _logs = [];
+
+  Translator<Loglevel, Color> translateColor({
+    required Color info,
+    required Color warn,
+    required Color error,
+    required Color debug,
+  }) {
+    colorTranslator = Translator(Loglevel.values)
+        .translate(Loglevel.info, info)
+        .translate(Loglevel.warn, warn)
+        .translate(Loglevel.error, error)
+        .translate(Loglevel.debug, debug)
+        .defaultValue(info) as Translator<Loglevel, Color>;
+    return colorTranslator;
+  }
 
   void log(Loglevel level, String message) {
     var log = Log(DateTime.now(), message, level);

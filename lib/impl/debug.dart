@@ -1,8 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 
 void debugPrintln(message) {
   if (kDebugMode) {
-    print(message);
+    debugPrint("$message\n");
+  }
+}
+
+void debugPrint(message) {
+  if (kDebugMode) {
+    stdout.write(message.toString());
   }
 }
 

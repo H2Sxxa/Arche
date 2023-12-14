@@ -9,5 +9,3 @@ class ArcheBus extends TypeProvider {
   ArcheConfig get getConfig => of();
   ArcheLogger get getLogger => of();
 }
-
-void name() {}
