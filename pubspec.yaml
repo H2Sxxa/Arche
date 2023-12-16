@@ -3,6 +3,8 @@ description: "Arche is a Flutter/Dart library including utils to build applicati
 version: 0.0.1
 homepage: https://github.com/H2Sxxa/Arche
 repository: https://github.com/H2Sxxa/Arche
+publish_to: https://pub.dev
+
 
 environment:
   sdk: '>=3.2.2 <4.0.0'
