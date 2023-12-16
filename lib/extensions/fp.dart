@@ -1,4 +1,4 @@
-import 'package:arche/extensions/typedfuctions.dart';
+import 'package:arche/extensions/functions.dart';
 
 extension FPBool on bool {
   R? then<R>(FunctionCallback<R> F) {

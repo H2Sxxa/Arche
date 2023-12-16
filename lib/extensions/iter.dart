@@ -1,4 +1,4 @@
-import 'package:arche/extensions/typedfuctions.dart';
+import 'package:arche/extensions/functions.dart';
 
 extension ListExt<T> on List<T> {
   List<T> addThen(T value) {
@@ -18,7 +18,11 @@ extension ListExt<T> on List<T> {
         insert(1 + 2 * i, separator);
       }
     }
+    return this;
+  }
 
+  List<T> insertThen(int index, T value) {
+    insert(index, value);
     return this;
   }
 

@@ -1,5 +1,5 @@
 
-import 'package:arche/extensions/typedfuctions.dart';
+import 'package:arche/extensions/functions.dart';
 
 class Optional<V> {
   late final V? _inner;
