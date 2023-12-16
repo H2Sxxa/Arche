@@ -7,4 +7,3 @@ class Singleton extends TypeProvider {
 }
 
 var singleton = Singleton();
-

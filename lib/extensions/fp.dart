@@ -8,4 +8,3 @@ extension FPBool on bool {
     return null;
   }
 }
-

@@ -1,4 +1,3 @@
-
 import 'package:arche/extensions/functions.dart';
 
 class Optional<V> {
