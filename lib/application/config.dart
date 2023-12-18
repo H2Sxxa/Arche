@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:arche/abc/kvrw.dart';
 import 'package:arche/abc/typed.dart';
 import 'package:arche/arche.dart';
+import 'package:flutter/services.dart';
 
 class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
   @override
@@ -13,8 +14,27 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
   final Map<K, V> _memorymap = {};
   String _path = "";
 
-  ArcheConfig.memory() {
+  ArcheConfig.memory(
+      {String init = "{}", MapSerializer<K, V, String>? serializer}) {
     _memory = true;
+
+    if (serializer != null) {
+      this.serializer = serializer;
+    }
+
+    _memorymap.addAll(this.serializer.decode(init));
+  }
+
+  ArcheConfig.asset(String name, {MapSerializer<K, V, String>? serializer}) {
+    _memory = true;
+
+    if (serializer != null) {
+      this.serializer = serializer;
+    }
+
+    rootBundle
+        .loadString(name)
+        .then((value) => _memorymap.addAll(this.serializer.decode(value)));
   }
 
   ArcheConfig.path(this._path, {MapSerializer<K, V, String>? serializer}) {
