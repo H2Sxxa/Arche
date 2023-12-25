@@ -17,7 +17,9 @@ class StateWidgetWrapper extends State<WidgetWrapper> {
     widget.state.setValue(this);
   }
 
-  void refresh() {}
+  void refresh({VoidCallback? fn}) {
+    setState(fn ?? () {});
+  }
 
   @override
   Widget build(BuildContext context) {
