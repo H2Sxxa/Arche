@@ -10,7 +10,11 @@ void debugPrintln(message) {
 
 void debugPrint(message) {
   if (kDebugMode) {
-    stdout.write(message.toString());
+    if (kIsWeb) {
+      print(message);
+    } else {
+      stdout.write(message.toString());
+    }
   }
 }
 

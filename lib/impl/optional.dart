@@ -17,7 +17,15 @@ class Optional<V> {
     return _inner == null;
   }
 
-  V get get => _inner!;
+  R? ifNull<R>(R Function(V) function) {
+    return isNull() ? null : function(value);
+  }
+
+  R? ifSome<R>(R Function(V) function) {
+    return isSome() ? null : function(value);
+  }
+
+  V get value => _inner!;
   V orElse(V defaultValue) {
     return _inner ?? defaultValue;
   }

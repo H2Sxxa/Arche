@@ -1,0 +1,26 @@
+import 'package:arche/impl/cans.dart';
+import 'package:flutter/widgets.dart';
+
+class WidgetWrapper extends StatefulWidget {
+  final Widget inner;
+  final MutableCans<StateWidgetWrapper> state = MutableCans();
+  WidgetWrapper(this.inner, {super.key});
+
+  @override
+  State<StatefulWidget> createState() => StateWidgetWrapper();
+}
+
+class StateWidgetWrapper extends State<WidgetWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    widget.state.setValue(this);
+  }
+
+  void refresh() {}
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.inner;
+  }
+}

@@ -2,7 +2,7 @@ import 'package:arche/impl/widgets.dart';
 import 'package:flutter/widgets.dart';
 
 class TypeProvider {
-  static final Map _data = {};
+  final Map _data = {};
   TypeProvider provide<T>(T instance) {
     if (!_data.containsKey(T.hashCode)) {
       _data[T.hashCode] = instance;
