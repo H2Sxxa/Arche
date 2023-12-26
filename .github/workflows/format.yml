@@ -6,11 +6,19 @@
 name: Dart Formatter
 
 on:
+  workflow_call:
+  workflow_dispatch:
   push:
     branches: ["main"]
+    paths:
+      - 'lib/**'
+      - 'example/lib/**'
   pull_request:
     branches: ["main"]
-
+    paths:
+      - 'lib/**'
+      - 'example/lib/**'
+      
 jobs:
   build:
     runs-on: ubuntu-latest
