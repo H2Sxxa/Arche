@@ -1,6 +1,6 @@
 name: arche
-description: "Arche is a Flutter/Dart library including utils to build applications effectively."
-version: 0.0.1
+description: "Arche is a Flutter library including utils to build applications effectively."
+version: 0.0.2
 homepage: https://github.com/H2Sxxa/Arche
 repository: https://github.com/H2Sxxa/Arche
 
