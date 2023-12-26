@@ -2,9 +2,9 @@ import 'package:arche/src/impl/cans.dart';
 import 'package:flutter/widgets.dart';
 
 class WidgetWrapper extends StatefulWidget {
-  final Widget inner;
+  final Widget child;
   final MutableCans<StateWidgetWrapper> state = MutableCans();
-  WidgetWrapper(this.inner, {super.key});
+  WidgetWrapper(this.child, {super.key});
 
   @override
   State<StatefulWidget> createState() => StateWidgetWrapper();
@@ -23,6 +23,6 @@ class StateWidgetWrapper extends State<WidgetWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.inner;
+    return widget.child;
   }
 }
