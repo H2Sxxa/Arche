@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NavigationItem extends NavigationRailDestination {
-  Widget page;
-  String? name;
-  NavigationItem({
+  final Widget page;
+  final String? name;
+  const NavigationItem({
     required super.icon,
     required super.label,
     required this.page,

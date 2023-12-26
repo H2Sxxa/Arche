@@ -1,3 +1,3 @@
-export 'package:arche/widgets/material/navigation.dart'
+export 'package:arche/widgets/src/material/navigation.dart'
     show NavigationItem, NavigationRailConfig, NavigationView
     hide StateNavigationView;
