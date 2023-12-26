@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class WidgetWrapper extends StatefulWidget {
   final Widget child;
   final MutableCans<StateWidgetWrapper> state = MutableCans();
-  WidgetWrapper(this.child, {super.key});
+  WidgetWrapper({super.key, required this.child});
 
   @override
   State<StatefulWidget> createState() => StateWidgetWrapper();
