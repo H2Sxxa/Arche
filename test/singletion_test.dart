@@ -1,4 +1,4 @@
-import 'package:arche/src/impl/debug.dart';
+import 'package:arche/src/impl/debug_io.dart';
 import 'package:arche/src/impl/singleton.dart';
 import 'package:test/test.dart';
 
@@ -15,6 +15,6 @@ class TestCls {
 void main() {
   test('Singleton', () {
     TestCls().increase();
-    debugPrintln(TestCls().v);
+    debugWrite(TestCls().v);
   });
 }

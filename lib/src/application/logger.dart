@@ -38,7 +38,7 @@ class ArcheLogger extends Subordinate {
 
   void log(Loglevel level, String message) {
     var log = Log(DateTime.now(), message, level);
-    debugPrintln(log.toString());
+    debugWrite(log.toString());
     _logs.add(log);
   }
 

@@ -1,5 +1,5 @@
 import 'package:arche/src/impl/cans.dart';
-import 'package:arche/src/impl/debug.dart';
+import 'package:arche/src/impl/debug_io.dart';
 import 'package:test/test.dart';
 
 class A {}
@@ -8,7 +8,7 @@ void main() {
   test("Simple", () {
     var a0 = A();
     var a1 = A();
-    debugPrint("${a0.hashCode} ${a1.hashCode}");
+    debugWrite("${a0.hashCode} ${a1.hashCode}");
   });
 
   test("Cans", () {
