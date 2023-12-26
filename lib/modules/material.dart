@@ -1,4 +1,4 @@
-export 'package:arche/src/material/navigation.dart'
+export 'package:arche/src/widgets/material/navigation.dart'
     show
         NavigationItem,
         NavigationRailConfig,
