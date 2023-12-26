@@ -22,7 +22,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
-          committer_name: Dart Formatter
+          committer_name: Dart Formatter[bot]
           committer_email: actions@github.com
           message: "Format .dart files"
           add: "*.dart"
