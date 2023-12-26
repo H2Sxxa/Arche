@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - name: Format
-        run: git commit -a -m " `dart format .`"
+        run: dart format .
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
