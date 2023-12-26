@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:arche/abc/typed.dart';
+import 'package:arche/src/abc/typed.dart';
 
 class JsonSerializer<K, V> implements MapSerializer<K, V, String> {
   @override

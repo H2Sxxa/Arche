@@ -1,4 +1,4 @@
-import 'package:arche/impl/cans.dart';
+import 'package:arche/src/impl/cans.dart';
 import 'package:flutter/widgets.dart';
 
 class WidgetWrapper extends StatefulWidget {

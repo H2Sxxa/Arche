@@ -1,5 +1,5 @@
-import 'package:arche/impl/debug.dart';
-import 'package:arche/impl/singleton.dart';
+import 'package:arche/src/impl/debug.dart';
+import 'package:arche/src/impl/singleton.dart';
 import 'package:test/test.dart';
 
 class TestCls {

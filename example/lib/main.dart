@@ -1,4 +1,4 @@
-import 'package:arche/widgets/material/navigation.dart';
+import 'package:arche/arche.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,26 +17,26 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Scaffold(
+        home: const Scaffold(
             body: NavigationView(
           items: [
             NavigationItem(
-              icon: const Icon(Icons.home),
-              label: const Text("Home"),
-              page: const Card(
+              icon: Icon(Icons.home),
+              label: Text("Home"),
+              page: Card(
                   child: Center(
                 child: Text("Home"),
               )),
             ),
             NavigationItem(
-              icon: const Icon(Icons.settings),
-              label: const Text("Settings"),
-              page: const Center(
+              icon: Icon(Icons.settings),
+              label: Text("Settings"),
+              page: Center(
                 child: Text("Settings"),
               ),
             ),
           ],
-          config: const NavigationRailConfig(
+          config: NavigationRailConfig(
             labelType: NavigationRailLabelType.selected,
           ),
         )));

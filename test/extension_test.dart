@@ -1,5 +1,5 @@
 import 'package:arche/extensions/iter.dart';
-import 'package:arche/impl/debug.dart';
+import 'package:arche/src/impl/debug.dart';
 import 'package:test/test.dart';
 
 void main() {

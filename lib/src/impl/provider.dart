@@ -1,4 +1,4 @@
-import 'package:arche/impl/widgets.dart';
+import 'package:arche/src/impl/widgets.dart';
 import 'package:flutter/widgets.dart';
 
 class TypeProvider {

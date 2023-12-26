@@ -1,4 +1,4 @@
-import 'package:arche/impl/provider.dart';
+import 'package:arche/src/impl/provider.dart';
 
 class Singleton extends TypeProvider {
   Singleton._internal();
