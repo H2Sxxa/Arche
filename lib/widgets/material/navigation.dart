@@ -71,7 +71,6 @@ class NavigationView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => StateNavigationView();
-
 }
 
 class StateNavigationView extends State<NavigationView> {
