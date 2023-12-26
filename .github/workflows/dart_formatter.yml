@@ -15,14 +15,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
-      - name: Format & Commit
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "Dart Formatter[bot]"
-          git commit -a -m "`dart format .`"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Format
+        run: git commit -a -m " `dart format .`"
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          committer_name: Dart Formatter
+          committer_email: actions@github.com
+          message: "Format .dart files"
+          add: "*.dart"
