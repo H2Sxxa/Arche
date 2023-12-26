@@ -74,7 +74,7 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
       var f = File(_path);
       var m = serializer.decode(f.readAsStringSync());
       m[key] = value;
-      f.writeAsString(serializer.encode(m));
+      f.writeAsStringSync(serializer.encode(m));
     }
   }
 
@@ -86,7 +86,7 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
       var f = File(_path);
       var v = serializer.decode(f.readAsStringSync());
       v.addAll(m);
-      f.writeAsString(serializer.encode(v));
+      f.writeAsStringSync(serializer.encode(v));
     }
   }
 }
