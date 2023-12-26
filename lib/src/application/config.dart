@@ -45,6 +45,18 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
     }
   }
 
+  ArcheConfig.file(File file, {MapSerializer<K, V, String>? serializer}) {
+    if (serializer != null) {
+      this.serializer = serializer;
+    }
+
+    _path = file.absolute.path;
+
+    if (!file.existsSync()) {
+      file.writeAsStringSync("{}");
+    }
+  }
+
   @override
   Map<K, V> read() {
     if (_memory) {
