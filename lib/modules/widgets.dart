@@ -1,1 +1,2 @@
-export 'package:arche/src/widgets/wrapper.dart' show WidgetWrapper;
+export 'package:arche/src/widgets/wrapper.dart'
+    show WidgetWrapper, StateWidgetWrapper;
