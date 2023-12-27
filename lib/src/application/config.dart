@@ -12,6 +12,7 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
   final Map<K, V> _memorymap = {};
   String _path = "";
 
+  /// Read Only
   ArcheConfig.memory(
       {String init = "{}", MapSerializer<K, V, String>? serializer}) {
     _memory = true;
@@ -23,6 +24,7 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
     _memorymap.addAll(this.serializer.decode(init));
   }
 
+  /// Read Only
   ArcheConfig.asset(String name, {MapSerializer<K, V, String>? serializer}) {
     _memory = true;
 
@@ -35,6 +37,7 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
         .then((value) => _memorymap.addAll(this.serializer.decode(value)));
   }
 
+  /// Read / Write
   ArcheConfig.path(this._path, {MapSerializer<K, V, String>? serializer}) {
     if (serializer != null) {
       this.serializer = serializer;
@@ -43,50 +46,52 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
     if (!File(_path).existsSync()) {
       File(_path).writeAsStringSync("{}");
     }
+
+    syncFrom();
   }
 
-  ArcheConfig.file(File file, {MapSerializer<K, V, String>? serializer}) {
-    if (serializer != null) {
-      this.serializer = serializer;
-    }
+  void loads(String data) {
+    _memorymap.addAll(this.serializer.decode(data));
+  }
 
-    _path = file.absolute.path;
-
-    if (!file.existsSync()) {
-      file.writeAsStringSync("{}");
+  /// Write
+  void syncTo() {
+    if (!_memory) {
+      File(_path).writeAsStringSync(serializer.encode(_memorymap));
     }
   }
 
+  /// Write
+  void syncFrom() {
+    if (!_memory) {
+      _memorymap.addAll(this.serializer.decode(File(_path).readAsStringSync()));
+    }
+  }
+
+  /// Read / Write
   @override
   Map<K, V> read() {
-    if (_memory) {
-      return _memorymap;
-    } else {
-      return serializer.decode(File(_path).readAsStringSync());
-    }
+    return _memorymap;
   }
 
+  /// Write
   @override
   void write(K key, V value) {
-    if (_memory) {
-      _memorymap[key] = value;
-    } else {
-      var f = File(_path);
-      var m = serializer.decode(f.readAsStringSync());
-      m[key] = value;
-      f.writeAsStringSync(serializer.encode(m));
-    }
+    _memorymap[key] = value;
+    syncTo();
   }
 
+  /// Write
   @override
   void writeAll(Map<K, V> m) {
-    if (_memory) {
-      _memorymap.addAll(m);
-    } else {
-      var f = File(_path);
-      var v = serializer.decode(f.readAsStringSync());
-      v.addAll(m);
-      f.writeAsStringSync(serializer.encode(v));
-    }
+    _memorymap.addAll(m);
+    syncTo();
+  }
+
+  /// Read / Write
+  @override
+  void delkey(K key) {
+    _memorymap.remove(key);
+    syncTo();
   }
 }
