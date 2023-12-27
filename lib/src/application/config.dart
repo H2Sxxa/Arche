@@ -54,7 +54,7 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
     if (serializer != null) {
       this.serializer = serializer;
     }
-    
+
     if (!_file.existsSync()) {
       _file.writeAsStringSync("{}");
     }
