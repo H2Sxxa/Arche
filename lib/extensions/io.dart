@@ -8,6 +8,10 @@ extension FSUtils on FileSystemEntity {
   File subFile(String path) {
     return File("${absolute.path}/$path");
   }
+
+  String subPath(String subpath) {
+    return "$path/$subpath";
+  }
 }
 
 extension CheckFile on File {

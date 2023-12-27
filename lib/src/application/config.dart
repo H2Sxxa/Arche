@@ -10,7 +10,7 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
   late MapSerializer<K, V, String> serializer = JsonSerializer();
   bool _memory = false;
   final Map<K, V> _memorymap = {};
-  String _path = "";
+  late File _file;
 
   /// Read Only
   ArcheConfig.memory(
@@ -38,13 +38,25 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
   }
 
   /// Read / Write
-  ArcheConfig.path(this._path, {MapSerializer<K, V, String>? serializer}) {
+  ArcheConfig.path(String path, {MapSerializer<K, V, String>? serializer}) {
     if (serializer != null) {
       this.serializer = serializer;
     }
+    _file = File(path);
+    if (!_file.existsSync()) {
+      _file.writeAsStringSync("{}");
+    }
 
-    if (!File(_path).existsSync()) {
-      File(_path).writeAsStringSync("{}");
+    syncFrom();
+  }
+
+  ArcheConfig.file(this._file, {MapSerializer<K, V, String>? serializer}) {
+    if (serializer != null) {
+      this.serializer = serializer;
+    }
+    
+    if (!_file.existsSync()) {
+      _file.writeAsStringSync("{}");
     }
 
     syncFrom();
@@ -57,14 +69,14 @@ class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
   /// Write
   void syncTo() {
     if (!_memory) {
-      File(_path).writeAsStringSync(serializer.encode(_memorymap));
+      _file.writeAsStringSync(serializer.encode(_memorymap));
     }
   }
 
   /// Write
   void syncFrom() {
     if (!_memory) {
-      _memorymap.addAll(this.serializer.decode(File(_path).readAsStringSync()));
+      _memorymap.addAll(this.serializer.decode(_file.readAsStringSync()));
     }
   }
 
