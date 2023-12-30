@@ -1,9 +1,14 @@
 class Translator<T, R> {
   Map<T, R?> values = {};
   late R _defautValue;
+  late final int length;
+
   Translator(List<T> values) {
     this.values.addAll({for (var k in values) k: null});
+    length = values.length;
   }
+
+  Iterable<MapEntry<T, R?>> get iterator => values.entries;
 
   Translator translate(T target, R translate) {
     values[target] = translate;
