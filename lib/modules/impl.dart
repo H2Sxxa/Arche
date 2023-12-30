@@ -9,4 +9,4 @@ export 'package:arche/src/impl/debug.dart' show debugExecute;
 
 export 'package:arche/src/impl/debug_io.dart'
     if (dart.library.html) 'package:arche/src/impl/debug_web.dart'
-    show debugWrite;
+    show debugWrite, debugWriteln;

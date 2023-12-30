@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:arche/arche.dart';
+import 'package:arche/src/abc/serial.dart';
 import 'package:flutter/services.dart';
 
 class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {

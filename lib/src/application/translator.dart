@@ -1,30 +1,32 @@
 class Translator<T, R> {
-  Map<T, R?> values = {};
+  final Map<T, R?> _internalMap = {};
+  final List<T> keys;
   late R _defautValue;
-  late final int length;
 
-  Translator(List<T> values) {
-    this.values.addAll({for (var k in values) k: null});
-    length = values.length;
-  }
-
-  Iterable<MapEntry<T, R?>> get iterator => values.entries;
-
-  Translator<T, R> translate(T target, R translate) {
-    values[target] = translate;
-    return this;
-  }
+  Iterable<MapEntry<T, R?>> get iterator => _internalMap.entries;
+  int get length => keys.length;
+  Iterable<R?> get values => _internalMap.values;
+  Translator(this.keys);
 
   Translator<T, R> defaultValue(R translate) {
     _defautValue = translate;
     return this;
   }
 
-  R? getTranslate(T target) {
-    var res = values[target];
+  Translator<T, R> translate(T target, R translate) {
+    _internalMap[target] = translate;
+    return this;
+  }
+
+  R? translation(T target) {
+    var res = _internalMap[target];
     if (res == null) {
+      assert(_defautValue != null);
       return _defautValue;
     }
     return res;
   }
 }
+
+typedef StringTranslator<T> = Translator<T, String>;
+typedef EnumStringTranslator = Translator<Enum, String>;
