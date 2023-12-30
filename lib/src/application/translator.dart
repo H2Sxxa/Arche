@@ -29,4 +29,3 @@ class Translator<T, R> {
 }
 
 typedef StringTranslator<T> = Translator<T, String>;
-typedef EnumStringTranslator = Translator<Enum, String>;
