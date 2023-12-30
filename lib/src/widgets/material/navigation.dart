@@ -57,7 +57,6 @@ class NavigationView extends StatefulWidget {
   final List<NavigationItem> items;
   final Widget? leading, trailing;
   final Widget Function(Widget, Animation<double>)? transitionBuilder;
-  final EdgeInsetsGeometry? pagePadding;
   final Duration? switchDuration;
   final NavigationRailConfig? config;
   const NavigationView({
@@ -67,7 +66,6 @@ class NavigationView extends StatefulWidget {
     this.switchDuration,
     this.leading,
     this.trailing,
-    this.pagePadding,
     this.config,
   });
 
@@ -138,11 +136,7 @@ class StateNavigationView extends State<NavigationView> {
                     (child, animation) =>
                         AnimatedSwitcher.defaultTransitionBuilder(
                             child, animation),
-                child: widget.pagePadding != null
-                    ? Padding(
-                        padding: widget.pagePadding!,
-                        child: widget.items[_currentIndex].page)
-                    : widget.items[_currentIndex].page)),
+                child: widget.items[_currentIndex].page)),
       ],
     );
   }
