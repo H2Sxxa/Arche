@@ -10,12 +10,12 @@ class Translator<T, R> {
 
   Iterable<MapEntry<T, R?>> get iterator => values.entries;
 
-  Translator translate(T target, R translate) {
+  Translator<T, R> translate(T target, R translate) {
     values[target] = translate;
     return this;
   }
 
-  Translator defaultValue(R translate) {
+  Translator<T, R> defaultValue(R translate) {
     _defautValue = translate;
     return this;
   }
