@@ -12,14 +12,13 @@ class NavigationItem extends NavigationRailDestination {
     super.disabled,
     super.indicatorColor,
     super.indicatorShape,
-    this.pagePadding,
     super.selectedIcon,
+    this.pagePadding,
   });
 }
 
 class NavigationRailConfig {
   final Color? backgroundColor;
-  final bool extended;
   final ValueChanged<int>? onDestinationSelected;
   final double? elevation;
   final double? groupAlignment;
@@ -37,7 +36,6 @@ class NavigationRailConfig {
   const NavigationRailConfig({
     this.key,
     this.backgroundColor,
-    this.extended = false,
     this.onDestinationSelected,
     this.elevation,
     this.groupAlignment,
@@ -60,6 +58,7 @@ class NavigationView extends StatefulWidget {
   final Widget Function(Widget, Animation<double>)? transitionBuilder;
   final Duration? switchDuration;
   final NavigationRailConfig? config;
+  final bool initialExtended;
   const NavigationView({
     super.key,
     required this.items,
@@ -67,6 +66,7 @@ class NavigationView extends StatefulWidget {
     this.switchDuration,
     this.leading,
     this.trailing,
+    this.initialExtended = false,
     this.config,
   });
 
@@ -76,6 +76,7 @@ class NavigationView extends StatefulWidget {
 
 class StateNavigationView extends State<NavigationView> {
   int _currentIndex = 0;
+  late bool extended;
   void pushName(String name) {
     setState(() {
       for (var element in widget.items.asMap().entries) {
@@ -86,13 +87,25 @@ class StateNavigationView extends State<NavigationView> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    extended = widget.initialExtended;
+  }
+
   Widget buildRail() {
     var rail = widget.config;
+
+    var leading = widget.leading ??
+        IconButton(
+            onPressed: () => setState(() => extended = !extended),
+            icon: const Icon(Icons.menu));
+
     if (rail != null) {
       return NavigationRail(
         key: rail.key,
         elevation: rail.elevation,
-        extended: rail.extended,
+        extended: extended,
         indicatorColor: rail.indicatorColor,
         backgroundColor: rail.backgroundColor,
         indicatorShape: rail.indicatorShape,
@@ -100,12 +113,12 @@ class StateNavigationView extends State<NavigationView> {
         minExtendedWidth: rail.minExtendedWidth,
         minWidth: rail.minWidth,
         useIndicator: rail.useIndicator,
-        labelType: rail.labelType,
+        labelType: extended ? NavigationRailLabelType.none : rail.labelType,
         unselectedIconTheme: rail.unselectedIconTheme,
         unselectedLabelTextStyle: rail.unselectedLabelTextStyle,
         selectedLabelTextStyle: rail.selectedLabelTextStyle,
         selectedIconTheme: rail.selectedIconTheme,
-        leading: widget.leading,
+        leading: leading,
         trailing: widget.trailing,
         destinations: widget.items,
         onDestinationSelected: (value) => setState(() {
@@ -115,9 +128,11 @@ class StateNavigationView extends State<NavigationView> {
       );
     }
     return NavigationRail(
-      leading: widget.leading,
+      leading: leading,
+      extended: extended,
       trailing: widget.trailing,
       destinations: widget.items,
+      labelType: NavigationRailLabelType.none,
       onDestinationSelected: (value) => setState(() {
         _currentIndex = value;
       }),
@@ -131,17 +146,19 @@ class StateNavigationView extends State<NavigationView> {
       children: [
         buildRail(),
         Expanded(
-            child: Padding(
-                padding: widget.items[_currentIndex].pagePadding ??
-                    const EdgeInsets.all(12),
-                child: AnimatedSwitcher(
-                    duration: widget.switchDuration ??
-                        const Duration(milliseconds: 500),
-                    transitionBuilder: widget.transitionBuilder ??
-                        (child, animation) =>
-                            AnimatedSwitcher.defaultTransitionBuilder(
-                                child, animation),
-                    child: widget.items[_currentIndex].page))),
+          child: Padding(
+            padding: widget.items[_currentIndex].pagePadding ??
+                const EdgeInsets.all(12),
+            child: AnimatedSwitcher(
+                duration:
+                    widget.switchDuration ?? const Duration(milliseconds: 500),
+                transitionBuilder: widget.transitionBuilder ??
+                    (child, animation) =>
+                        AnimatedSwitcher.defaultTransitionBuilder(
+                            child, animation),
+                child: widget.items[_currentIndex].page),
+          ),
+        ),
       ],
     );
   }
