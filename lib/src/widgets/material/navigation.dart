@@ -96,12 +96,17 @@ class StateNavigationView extends State<NavigationView> {
   Widget buildRail() {
     var rail = widget.config;
 
-    var leading = widget.leading ??
+    Widget? leading = widget.leading ??
         IconButton(
             onPressed: () => setState(() => extended = !extended),
             icon: const Icon(Icons.menu));
 
     if (rail != null) {
+      if (widget.leading == null &&
+          !(rail.labelType == NavigationRailLabelType.none ||
+              rail.labelType == null)) {
+        leading = null;
+      }
       return NavigationRail(
         key: rail.key,
         elevation: rail.elevation,
