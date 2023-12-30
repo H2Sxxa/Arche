@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class NavigationItem extends NavigationRailDestination {
   final Widget page;
   final String? name;
+  final EdgeInsetsGeometry? pagePadding;
   const NavigationItem({
     required super.icon,
     required super.label,
@@ -11,7 +12,7 @@ class NavigationItem extends NavigationRailDestination {
     super.disabled,
     super.indicatorColor,
     super.indicatorShape,
-    super.padding,
+    this.pagePadding,
     super.selectedIcon,
   });
 }
@@ -91,6 +92,7 @@ class StateNavigationView extends State<NavigationView> {
       return NavigationRail(
         key: rail.key,
         elevation: rail.elevation,
+        extended: rail.extended,
         indicatorColor: rail.indicatorColor,
         backgroundColor: rail.backgroundColor,
         indicatorShape: rail.indicatorShape,
@@ -129,14 +131,17 @@ class StateNavigationView extends State<NavigationView> {
       children: [
         buildRail(),
         Expanded(
-            child: AnimatedSwitcher(
-                duration:
-                    widget.switchDuration ?? const Duration(milliseconds: 500),
-                transitionBuilder: widget.transitionBuilder ??
-                    (child, animation) =>
-                        AnimatedSwitcher.defaultTransitionBuilder(
-                            child, animation),
-                child: widget.items[_currentIndex].page)),
+            child: Padding(
+                padding: widget.items[_currentIndex].pagePadding ??
+                    const EdgeInsets.all(12),
+                child: AnimatedSwitcher(
+                    duration: widget.switchDuration ??
+                        const Duration(milliseconds: 500),
+                    transitionBuilder: widget.transitionBuilder ??
+                        (child, animation) =>
+                            AnimatedSwitcher.defaultTransitionBuilder(
+                                child, animation),
+                    child: widget.items[_currentIndex].page))),
       ],
     );
   }

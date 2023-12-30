@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
             NavigationItem(
               icon: Icon(Icons.home),
               label: Text("Home"),
-              padding: EdgeInsets.all(12),
               page: Card(
                   child: Center(
                 child: Text("Home"),
@@ -32,7 +31,6 @@ class MyApp extends StatelessWidget {
             NavigationItem(
               icon: Icon(Icons.settings),
               label: Text("Settings"),
-              padding: EdgeInsets.all(12),
               page: Center(
                 child: Text("Settings"),
               ),
