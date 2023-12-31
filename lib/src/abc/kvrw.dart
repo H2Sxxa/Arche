@@ -12,6 +12,10 @@ abstract mixin class KVIO<K, V> {
     return read()[key]!;
   }
 
+  V? tryGet(K key) {
+    return read()[key];
+  }
+
   bool has(K key) {
     return read().containsKey(key);
   }
