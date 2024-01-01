@@ -1,9 +1,8 @@
-import 'package:arche/src/widgets/mixin.dart';
 import 'package:flutter/widgets.dart';
 
 class ValueStateBuilder<V> extends StatefulWidget {
-  final Widget Function(BuildContext context, V value,
-      void Function({VoidCallback? fn}) refresh) builder;
+  final Widget Function(
+      BuildContext context, V value, void Function(V value) update) builder;
   final V initial;
   const ValueStateBuilder(
       {required this.builder, required this.initial, super.key});
@@ -12,17 +11,22 @@ class ValueStateBuilder<V> extends StatefulWidget {
   State<StatefulWidget> createState() => StateValueStateBuilder();
 }
 
-class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>>
-    with MixinRefreshState<ValueStateBuilder<V>> {
-  late V value;
+class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
+  late V _value;
   @override
   void initState() {
     super.initState();
-    value = widget.initial;
+    _value = widget.initial;
+  }
+
+  void update(V value) {
+    setState(() {
+      _value = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, value, refresh);
+    return widget.builder(context, _value, update);
   }
 }
