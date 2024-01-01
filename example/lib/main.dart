@@ -36,9 +36,6 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ],
-          config: NavigationRailConfig(
-            labelType: NavigationRailLabelType.selected,
-          ),
         )));
   }
 }

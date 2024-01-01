@@ -74,7 +74,8 @@ class NavigationView extends StatefulWidget {
   State<StatefulWidget> createState() => StateNavigationView();
 }
 
-class StateNavigationView extends State<NavigationView> {
+class StateNavigationView extends State<NavigationView>
+    with TickerProviderStateMixin {
   int _currentIndex = 0;
   late bool extended;
   void pushName(String name) {
@@ -87,10 +88,19 @@ class StateNavigationView extends State<NavigationView> {
     });
   }
 
+  late AnimationController animationIconCtrl;
   @override
   void initState() {
     super.initState();
     extended = widget.initialExtended;
+    animationIconCtrl = AnimationController(vsync: this)
+      ..duration = Durations.medium4;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationIconCtrl.dispose();
   }
 
   Widget buildRail() {
@@ -98,8 +108,14 @@ class StateNavigationView extends State<NavigationView> {
 
     Widget? leading = widget.leading ??
         IconButton(
-            onPressed: () => setState(() => extended = !extended),
-            icon: const Icon(Icons.menu));
+            onPressed: () => setState(() {
+                  extended = !extended;
+                  extended
+                      ? animationIconCtrl.forward()
+                      : animationIconCtrl.reverse();
+                }),
+            icon: AnimatedIcon(
+                icon: AnimatedIcons.menu_arrow, progress: animationIconCtrl));
 
     if (rail != null) {
       if (widget.leading == null &&
@@ -155,8 +171,7 @@ class StateNavigationView extends State<NavigationView> {
             padding: widget.items[_currentIndex].pagePadding ??
                 const EdgeInsets.all(12),
             child: AnimatedSwitcher(
-                duration:
-                    widget.switchDuration ?? const Duration(milliseconds: 500),
+                duration: widget.switchDuration ?? Durations.medium4,
                 transitionBuilder: widget.transitionBuilder ??
                     (child, animation) =>
                         AnimatedSwitcher.defaultTransitionBuilder(
