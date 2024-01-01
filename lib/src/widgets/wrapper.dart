@@ -1,28 +1,28 @@
-import 'package:arche/src/impl/cans.dart';
+import 'package:arche/src/widgets/mixin.dart';
 import 'package:flutter/widgets.dart';
 
-class WidgetWrapper extends StatefulWidget {
-  final Widget child;
-  final MutableCans<StateWidgetWrapper> state = MutableCans();
-  WidgetWrapper({super.key, required this.child});
+class ValueStateBuilder<V> extends StatefulWidget {
+  final Widget Function(BuildContext context, V value,
+      void Function({VoidCallback? fn}) refresh) builder;
+  final V initial;
+  const ValueStateBuilder(
+      {required this.builder, required this.initial, super.key});
 
   @override
-  State<StatefulWidget> createState() => StateWidgetWrapper();
+  State<StatefulWidget> createState() => StateValueStateBuilder();
 }
 
-class StateWidgetWrapper extends State<WidgetWrapper> {
+class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>>
+    with MixinRefreshState<ValueStateBuilder<V>> {
+  late V value;
   @override
   void initState() {
     super.initState();
-    widget.state.setValue(this);
-  }
-
-  void refresh({VoidCallback? fn}) {
-    setState(fn ?? () {});
+    value = widget.initial;
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.builder(context, value, refresh);
   }
 }
