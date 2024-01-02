@@ -77,6 +77,7 @@ class NavigationView extends StatefulWidget {
 class StateNavigationView extends State<NavigationView>
     with TickerProviderStateMixin {
   int _currentIndex = 0;
+  final List _pastIndex = [];
   late bool extended;
   void pushName(String name) {
     setState(() {
@@ -86,6 +87,19 @@ class StateNavigationView extends State<NavigationView>
         }
       }
     });
+  }
+
+  void pushIndex(int index) {
+    setState(() {
+      _pastIndex.add(_currentIndex);
+      _currentIndex = index;
+    });
+  }
+
+  void pop() {
+    if (_pastIndex.isNotEmpty) {
+      setState(() => _currentIndex = _pastIndex.removeLast());
+    }
   }
 
   late AnimationController animationIconCtrl;
@@ -103,7 +117,7 @@ class StateNavigationView extends State<NavigationView>
     animationIconCtrl.dispose();
   }
 
-  Widget buildRail() {
+  Widget _buildRail() {
     var rail = widget.config;
 
     Widget? leading = widget.leading ??
@@ -154,9 +168,7 @@ class StateNavigationView extends State<NavigationView>
       trailing: widget.trailing,
       destinations: widget.items,
       labelType: NavigationRailLabelType.none,
-      onDestinationSelected: (value) => setState(() {
-        _currentIndex = value;
-      }),
+      onDestinationSelected: (value) => pushIndex(value),
       selectedIndex: _currentIndex,
     );
   }
@@ -165,7 +177,7 @@ class StateNavigationView extends State<NavigationView>
   Widget build(BuildContext context) {
     return Row(
       children: [
-        buildRail(),
+        _buildRail(),
         Expanded(
           child: Padding(
             padding: widget.items[_currentIndex].pagePadding ??
