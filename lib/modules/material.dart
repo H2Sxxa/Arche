@@ -1,6 +1,10 @@
 export 'package:arche/src/widgets/material/navigation.dart'
     show
         NavigationItem,
-        NavigationRailConfig,
         NavigationView,
-        StateNavigationView;
+        NavigationHorizontalConfig,
+        NavigationVerticalConfig,
+        NavigationLabelType,
+        StateNavigationView,
+        HorizontalItemConfig,
+        VerticalItemConfig;

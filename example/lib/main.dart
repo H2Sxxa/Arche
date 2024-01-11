@@ -19,10 +19,11 @@ class MyApp extends StatelessWidget {
         ),
         home: const Scaffold(
             body: NavigationView(
+          direction: Axis.horizontal,
           items: [
             NavigationItem(
               icon: Icon(Icons.home),
-              label: Text("Home"),
+              label: "Home",
               page: Card(
                   child: Center(
                 child: Text("Home"),
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             ),
             NavigationItem(
               icon: Icon(Icons.settings),
-              label: Text("Settings"),
+              label: "Settings",
               page: Center(
                 child: Text("Settings"),
               ),

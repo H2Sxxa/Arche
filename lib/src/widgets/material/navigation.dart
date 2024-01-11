@@ -1,28 +1,96 @@
 import 'package:flutter/material.dart';
 
-class NavigationItem extends NavigationRailDestination {
-  final Widget page;
-  final String? name;
-  final EdgeInsetsGeometry? pagePadding;
-  const NavigationItem({
-    required super.icon,
-    required super.label,
-    required this.page,
-    this.name,
-    super.disabled,
-    super.indicatorColor,
-    super.indicatorShape,
-    super.selectedIcon,
-    this.pagePadding,
+typedef NavBuilder = Widget Function(
+  BuildContext context,
+  Widget Function() vertical,
+  Widget Function() horizontal,
+  StateNavigationView state,
+);
+
+class HorizontalItemConfig {
+  final Color? indicatorColor;
+  final EdgeInsetsGeometry? padding;
+  final ShapeBorder? indicatorShape;
+  const HorizontalItemConfig({
+    this.padding,
+    this.indicatorColor,
+    this.indicatorShape,
   });
 }
 
-class NavigationRailConfig {
-  final Color? backgroundColor;
-  final ValueChanged<int>? onDestinationSelected;
-  final double? elevation;
+class VerticalItemConfig {
+  final Key? key;
+  final String? tooltip;
+  const VerticalItemConfig({
+    this.key,
+    this.tooltip,
+  });
+}
+
+class NavigationItem {
+  final Widget? selectedIcon;
+  final Widget page, icon;
+
+  /// Be used to `pushName`
+  final String? name;
+
+  final String label;
+  final VerticalItemConfig? vertical;
+
+  /// Be used in a horizontal View(Row)
+  final HorizontalItemConfig? horizontal;
+
+  /// The padding of the page
+  final EdgeInsetsGeometry? padding;
+
+  /// Indicates that this destination is selectable.
+  ///
+  /// Defaults to true.
+  final bool enabled;
+  const NavigationItem({
+    required this.icon,
+    required this.page,
+    this.selectedIcon,
+    this.name,
+    this.label = "",
+    this.padding,
+    this.vertical,
+    this.horizontal,
+    this.enabled = true,
+  });
+
+  NavigationRailDestination buildHorizontal() {
+    return NavigationRailDestination(
+      icon: icon,
+      selectedIcon: selectedIcon,
+      label: Text(label),
+      disabled: !enabled,
+      indicatorColor: horizontal?.indicatorColor,
+      indicatorShape: horizontal?.indicatorShape,
+      padding: horizontal?.padding,
+    );
+  }
+
+  NavigationDestination buildVertical() {
+    return NavigationDestination(
+      icon: icon,
+      label: label,
+      selectedIcon: selectedIcon,
+      enabled: enabled,
+      tooltip: vertical?.tooltip,
+      key: vertical?.key,
+    );
+  }
+}
+
+enum NavigationLabelType {
+  none,
+  selected,
+  all,
+}
+
+class NavigationHorizontalConfig {
   final double? groupAlignment;
-  final NavigationRailLabelType? labelType;
   final TextStyle? unselectedLabelTextStyle;
   final TextStyle? selectedLabelTextStyle;
   final IconThemeData? unselectedIconTheme;
@@ -30,16 +98,12 @@ class NavigationRailConfig {
   final double? minWidth;
   final double? minExtendedWidth;
   final bool? useIndicator;
-  final Color? indicatorColor;
-  final ShapeBorder? indicatorShape;
-  final Key? key;
-  const NavigationRailConfig({
-    this.key,
-    this.backgroundColor,
-    this.onDestinationSelected,
-    this.elevation,
+  final bool initialExtended;
+  final Widget? leading, trailing;
+  const NavigationHorizontalConfig({
+    this.leading,
+    this.trailing,
     this.groupAlignment,
-    this.labelType,
     this.unselectedLabelTextStyle,
     this.selectedLabelTextStyle,
     this.unselectedIconTheme,
@@ -47,27 +111,56 @@ class NavigationRailConfig {
     this.minWidth,
     this.minExtendedWidth,
     this.useIndicator,
-    this.indicatorColor,
-    this.indicatorShape,
+    this.initialExtended = false,
+  });
+}
+
+class NavigationVerticalConfig {
+  final Color? shadowColor, surfaceTintColor;
+  final MaterialStateProperty<Color?>? overlayColor;
+  final double? height;
+  final Duration? animationDuration;
+  const NavigationVerticalConfig({
+    this.shadowColor,
+    this.overlayColor,
+    this.surfaceTintColor,
+    this.height,
+    this.animationDuration,
   });
 }
 
 class NavigationView extends StatefulWidget {
+  final Key? navKey;
   final List<NavigationItem> items;
-  final Widget? leading, trailing;
   final Widget Function(Widget, Animation<double>)? transitionBuilder;
   final Duration? switchDuration;
-  final NavigationRailConfig? config;
-  final bool initialExtended;
+  final Axis direction;
+  final bool reversed;
+  final NavigationHorizontalConfig? horizontal;
+  final NavigationVerticalConfig? vertical;
+  final Color? indicatorColor;
+  final ShapeBorder? indicatorShape;
+  final Color? backgroundColor;
+  final double? elevation;
+  final NavigationLabelType? labelType;
+
+  final NavBuilder? builder;
   const NavigationView({
     super.key,
     required this.items,
+    this.navKey,
     this.transitionBuilder,
     this.switchDuration,
-    this.leading,
-    this.trailing,
-    this.initialExtended = false,
-    this.config,
+    this.direction = Axis.horizontal,
+    this.reversed = false,
+    this.horizontal,
+    this.vertical,
+    this.indicatorColor,
+    this.indicatorShape,
+    this.backgroundColor,
+    this.elevation,
+    this.labelType,
+    this.builder,
   });
 
   @override
@@ -106,7 +199,8 @@ class StateNavigationView extends State<NavigationView>
   @override
   void initState() {
     super.initState();
-    extended = widget.initialExtended;
+
+    extended = widget.horizontal?.initialExtended ?? false;
     animationIconCtrl = AnimationController(vsync: this)
       ..duration = Durations.medium4;
   }
@@ -117,10 +211,52 @@ class StateNavigationView extends State<NavigationView>
     animationIconCtrl.dispose();
   }
 
-  Widget _buildRail() {
-    var rail = widget.config;
+  Widget _buildVertical() {
+    var config = widget.vertical;
+    NavigationDestinationLabelBehavior labelType =
+        NavigationDestinationLabelBehavior.onlyShowSelected;
+    switch (widget.labelType) {
+      case NavigationLabelType.all:
+        labelType = NavigationDestinationLabelBehavior.alwaysShow;
+        break;
+      case NavigationLabelType.none:
+        labelType = NavigationDestinationLabelBehavior.alwaysHide;
+        break;
+      default:
+        break;
+    }
+    return NavigationBar(
+      destinations: widget.items.map((e) => e.buildVertical()).toList(),
+      onDestinationSelected: pushIndex,
+      selectedIndex: _currentIndex,
+      elevation: widget.elevation,
+      indicatorColor: widget.indicatorColor,
+      backgroundColor: widget.backgroundColor,
+      indicatorShape: widget.indicatorShape,
+      shadowColor: config?.shadowColor,
+      overlayColor: config?.overlayColor,
+      surfaceTintColor: config?.surfaceTintColor,
+      height: config?.height,
+      animationDuration: config?.animationDuration,
+      key: widget.navKey,
+      labelBehavior: labelType,
+    );
+  }
 
-    Widget? leading = widget.leading ??
+  Widget _buildHorizontal() {
+    var config = widget.horizontal;
+    NavigationRailLabelType labelType = NavigationRailLabelType.none;
+    switch (widget.labelType) {
+      case NavigationLabelType.all:
+        labelType = NavigationRailLabelType.all;
+        break;
+      case NavigationLabelType.selected:
+        labelType = NavigationRailLabelType.selected;
+        break;
+      default:
+        break;
+    }
+    Widget? leading = config?.leading ??
         IconButton(
             onPressed: () => setState(() {
                   extended = !extended;
@@ -129,69 +265,76 @@ class StateNavigationView extends State<NavigationView>
                       : animationIconCtrl.reverse();
                 }),
             icon: AnimatedIcon(
-                icon: AnimatedIcons.menu_arrow, progress: animationIconCtrl));
-
-    if (rail != null) {
-      if (widget.leading == null &&
-          !(rail.labelType == NavigationRailLabelType.none ||
-              rail.labelType == null)) {
-        leading = null;
-      }
-      return NavigationRail(
-        key: rail.key,
-        elevation: rail.elevation,
-        extended: extended,
-        indicatorColor: rail.indicatorColor,
-        backgroundColor: rail.backgroundColor,
-        indicatorShape: rail.indicatorShape,
-        groupAlignment: rail.groupAlignment,
-        minExtendedWidth: rail.minExtendedWidth,
-        minWidth: rail.minWidth,
-        useIndicator: rail.useIndicator,
-        labelType: extended ? NavigationRailLabelType.none : rail.labelType,
-        unselectedIconTheme: rail.unselectedIconTheme,
-        unselectedLabelTextStyle: rail.unselectedLabelTextStyle,
-        selectedLabelTextStyle: rail.selectedLabelTextStyle,
-        selectedIconTheme: rail.selectedIconTheme,
-        leading: leading,
-        trailing: widget.trailing,
-        destinations: widget.items,
-        onDestinationSelected: (value) => setState(() {
-          _currentIndex = value;
-        }),
-        selectedIndex: _currentIndex,
-      );
+              icon: AnimatedIcons.menu_arrow,
+              progress: animationIconCtrl,
+            ));
+    if (config?.leading == null && labelType != NavigationRailLabelType.none) {
+      leading = null;
     }
+
     return NavigationRail(
       leading: leading,
       extended: extended,
-      trailing: widget.trailing,
-      destinations: widget.items,
-      labelType: NavigationRailLabelType.none,
-      onDestinationSelected: (value) => pushIndex(value),
+      selectedLabelTextStyle: config?.selectedLabelTextStyle,
+      unselectedLabelTextStyle: config?.unselectedLabelTextStyle,
+      unselectedIconTheme: config?.unselectedIconTheme,
+      trailing: config?.trailing,
+      destinations: widget.items.map((e) => e.buildHorizontal()).toList(),
+      onDestinationSelected: pushIndex,
       selectedIndex: _currentIndex,
+      key: widget.navKey,
+      selectedIconTheme: config?.selectedIconTheme,
+      labelType: extended ? NavigationRailLabelType.none : labelType,
+      indicatorColor: widget.indicatorColor,
+      backgroundColor: widget.backgroundColor,
+      indicatorShape: widget.indicatorShape,
+      groupAlignment: config?.groupAlignment,
+      minExtendedWidth: config?.minExtendedWidth,
+      minWidth: config?.minWidth,
+      useIndicator: config?.useIndicator,
+      elevation: widget.elevation,
     );
   }
 
+  static Widget defaultBuilder(
+    BuildContext context,
+    Widget Function() vertical,
+    Widget Function() horizontal,
+    StateNavigationView state,
+  ) {
+    var view = state.widget;
+    var isHorizontal = view.direction == Axis.horizontal;
+    var children = isHorizontal
+        ? [horizontal(), state.content]
+        : [state.content, vertical()];
+    if (view.reversed) {
+      children = children.reversed.toList();
+    }
+
+    return isHorizontal ? Row(children: children) : Column(children: children);
+  }
+
+  Widget get content => Expanded(
+        child: Padding(
+          padding:
+              widget.items[_currentIndex].padding ?? const EdgeInsets.all(12),
+          child: AnimatedSwitcher(
+              duration: widget.switchDuration ?? Durations.medium4,
+              transitionBuilder: widget.transitionBuilder ??
+                  (child, animation) =>
+                      AnimatedSwitcher.defaultTransitionBuilder(
+                          child, animation),
+              child: widget.items[_currentIndex].page),
+        ),
+      );
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _buildRail(),
-        Expanded(
-          child: Padding(
-            padding: widget.items[_currentIndex].pagePadding ??
-                const EdgeInsets.all(12),
-            child: AnimatedSwitcher(
-                duration: widget.switchDuration ?? Durations.medium4,
-                transitionBuilder: widget.transitionBuilder ??
-                    (child, animation) =>
-                        AnimatedSwitcher.defaultTransitionBuilder(
-                            child, animation),
-                child: widget.items[_currentIndex].page),
-          ),
-        ),
-      ],
+    NavBuilder builder = widget.builder ?? defaultBuilder;
+    return builder(
+      context,
+      _buildVertical,
+      _buildHorizontal,
+      this,
     );
   }
 }

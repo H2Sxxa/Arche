@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 class ValueStateBuilder<V> extends StatefulWidget {
-  final Widget Function(
-      BuildContext context, V value, void Function(V value) update) builder;
+  final Widget Function(BuildContext context, V value, ValueChanged<V> update)
+      builder;
   final V initial;
   const ValueStateBuilder(
       {required this.builder, required this.initial, super.key});
