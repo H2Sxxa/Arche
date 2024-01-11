@@ -3,7 +3,6 @@
  - Imporve the `NavigationView`, support the vertical view
  - `tryGet` method in `KVIO`
  - Some Small Update and BugFix
-
  - Optimize the project structure
  - Try compat with web
 
