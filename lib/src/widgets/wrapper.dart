@@ -8,7 +8,7 @@ class ValueStateBuilder<V> extends StatefulWidget {
       {required this.builder, required this.initial, super.key});
 
   @override
-  State<StatefulWidget> createState() => StateValueStateBuilder();
+  State<StatefulWidget> createState() => StateValueStateBuilder<V>();
 }
 
 class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
