@@ -1,3 +1,7 @@
+## 0.0.4
+
+ - New Widget `CardButton`
+
 ## 0.0.3
 
  - Imporve the `NavigationView`, support the vertical view

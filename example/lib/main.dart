@@ -17,19 +17,23 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const Scaffold(
+        home: Scaffold(
             body: NavigationView(
           direction: Axis.horizontal,
           items: [
             NavigationItem(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               label: "Home",
               page: Card(
                   child: Center(
-                child: Text("Home"),
+                child: CardButton(
+                  size: Size.infinite,
+                  child: const Text("hello"),
+                  onTap: () {},
+                ),
               )),
             ),
-            NavigationItem(
+            const NavigationItem(
               icon: Icon(Icons.settings),
               label: "Settings",
               page: Center(
