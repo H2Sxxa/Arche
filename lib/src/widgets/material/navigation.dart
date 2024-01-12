@@ -23,7 +23,7 @@ class VerticalItemConfig {
   final String? tooltip;
   const VerticalItemConfig({
     this.key,
-    this.tooltip,
+    this.tooltip = "",
   });
 }
 
