@@ -17,11 +17,11 @@ class Optional<V> {
     return _inner == null;
   }
 
-  R? ifNull<R>(R Function(V) function) {
+  R? ifNull<R>(R Function(V value) function) {
     return isNull() ? null : function(value);
   }
 
-  R? ifSome<R>(R Function(V) function) {
+  R? ifSome<R>(R Function(V value) function) {
     return isSome() ? null : function(value);
   }
 

@@ -58,4 +58,12 @@ extension IterExt<T> on Iterable<T> {
     }
     return true;
   }
+
+  List<R> mapEnumerate<R>(FunctionIndexedFactory<T, R> functionFactory) {
+    List<R> result = [];
+    for (var (index, value) in indexed) {
+      result.add(functionFactory(index, value));
+    }
+    return result;
+  }
 }

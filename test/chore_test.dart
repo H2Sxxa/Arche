@@ -2,13 +2,11 @@ import 'package:arche/src/impl/cans.dart';
 import 'package:arche/src/impl/debug_io.dart';
 import 'package:test/test.dart';
 
-class A {}
-
 void main() {
   test("Simple", () {
-    var a0 = A();
-    var a1 = A();
-    debugWrite("${a0.hashCode} ${a1.hashCode}");
+    var a = [2];
+    a.last = 1;
+    debugWrite(a);
   });
 
   test("Cans", () {

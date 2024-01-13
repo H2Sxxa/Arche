@@ -1,3 +1,4 @@
+import 'package:arche/src/impl/optional.dart';
 import 'package:flutter/material.dart';
 
 typedef NavBuilder = Widget Function(
@@ -23,7 +24,7 @@ class VerticalItemConfig {
   final String? tooltip;
   const VerticalItemConfig({
     this.key,
-    this.tooltip = "",
+    this.tooltip,
   });
 }
 
@@ -77,7 +78,7 @@ class NavigationItem {
       label: label,
       selectedIcon: selectedIcon,
       enabled: enabled,
-      tooltip: vertical?.tooltip,
+      tooltip: vertical?.tooltip ?? "",
       key: vertical?.key,
     );
   }
@@ -172,14 +173,18 @@ class StateNavigationView extends State<NavigationView>
   int _currentIndex = 0;
   final List _pastIndex = [];
   late bool extended;
-  void pushName(String name) {
-    setState(() {
-      for (var element in widget.items.asMap().entries) {
-        if (element.value.name == name) {
-          _currentIndex = element.key;
-        }
+  late AnimationController animationIconCtrl;
+
+  void pushName(String name) =>
+      getIndex(name).ifSome((value) => pushIndex(value));
+
+  Optional<int> getIndex(String name) {
+    for (var element in widget.items.asMap().entries) {
+      if (element.value.name == name) {
+        return Optional(value: element.key);
       }
-    });
+    }
+    return Optional();
   }
 
   void pushIndex(int index) {
@@ -195,7 +200,18 @@ class StateNavigationView extends State<NavigationView>
     }
   }
 
-  late AnimationController animationIconCtrl;
+  void replace(int index) {
+    setState(() {
+      if (_pastIndex.isNotEmpty) {
+        _pastIndex.last = index;
+      }
+      _currentIndex = index;
+    });
+  }
+
+  void replaceName(String name) =>
+      getIndex(name).ifSome((value) => replace(value));
+
   @override
   void initState() {
     super.initState();
