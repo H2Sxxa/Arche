@@ -10,9 +10,9 @@ void main() {
   });
 
   test("Cans", () {
-    var a = MutableCans();
+    var a = MutableCan();
     a.setValue(1);
-    var b = MutableCans();
+    var b = MutableCan();
     b.setValue(10);
   });
 }
