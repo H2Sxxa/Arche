@@ -8,11 +8,15 @@ class CardButton extends StatelessWidget {
   final GestureDoubleTapCallback? onDoubleTap;
   final Size size;
   final double? elevation;
+  final ShapeBorder? shape;
+  final Color? color;
   const CardButton({
     super.key,
     required this.child,
     required this.size,
     this.elevation,
+    this.color,
+    this.shape,
     this.onTap,
     this.onDoubleTap,
     this.onLongPress,
@@ -22,6 +26,8 @@ class CardButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: elevation,
+      shape: shape,
+      color: color,
       child: InkWell(
         onTap: onTap,
         onDoubleTap: onDoubleTap,
