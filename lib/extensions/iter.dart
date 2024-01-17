@@ -67,3 +67,9 @@ extension IterExt<T> on Iterable<T> {
     return result;
   }
 }
+
+extension ItorExt<T> on Iterator<T> {
+  T? next() {
+    return moveNext() ? current : null;
+  }
+}
