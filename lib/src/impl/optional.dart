@@ -3,7 +3,7 @@ import 'package:arche/extensions/functions.dart';
 class Optional<V> {
   late final V? _inner;
 
-  final Optional<void> empty = Optional(value: null);
+  static Optional<void> empty = Optional(value: null);
 
   Optional({V? value}) {
     _inner = value;
