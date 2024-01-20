@@ -41,6 +41,14 @@ class FutureLazyConstCan<T> extends ConstCan<T> {
     return value!;
   }
 
+  Future<T> getValue() async {
+    if (value != null) {
+      return value!;
+    }
+
+    return await reload();
+  }
+
   Widget widgetBuilder(AsyncWidgetBuilder builder, {bool refresh = false}) {
     return FutureBuilder(
       future: refresh
@@ -67,6 +75,9 @@ class LazyDynamicCan<T> extends DynamicCan<T> {
   final ValueGetter<T> builder;
   LazyDynamicCan({required this.builder});
 
+  @override
+  T get value => super.value ?? reload();
+
   T reload() {
     value = builder();
     return value!;
@@ -81,6 +92,14 @@ class FutureLazyDynamicCan<T> extends DynamicCan<T> {
   Future<T> reload() async {
     value = await builder();
     return value!;
+  }
+
+  Future<T> getValue() async {
+    if (value != null) {
+      return value!;
+    }
+
+    return await reload();
   }
 
   Widget widgetBuilder(AsyncWidgetBuilder builder, {bool refresh = false}) {
