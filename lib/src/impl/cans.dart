@@ -16,7 +16,7 @@ class LazyCan<T> extends ConstCan<T> {
   T get value => super.value ?? reload();
 
   T reload() {
-    super.value = builder();
+    value = builder();
     return value;
   }
 }
