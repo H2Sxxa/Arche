@@ -5,7 +5,7 @@ export 'package:arche/src/impl/singleton.dart' show singleton, Singleton;
 
 export 'package:arche/src/impl/optional.dart' show Optional;
 
-export 'package:arche/src/impl/cans.dart' show ConstCan, LazyCan;
+export 'package:arche/src/impl/cans.dart' show ConstCan, LazyCan, FutureLazyCan;
 
 export 'package:arche/src/impl/debug.dart' show debugExecute;
 
