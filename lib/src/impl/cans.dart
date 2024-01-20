@@ -49,7 +49,7 @@ class FutureLazyConstCan<T> extends ConstCan<T> {
     return await reload();
   }
 
-  Widget widgetBuilder(AsyncWidgetBuilder builder, {bool refresh = false}) {
+  Widget widgetBuilder(AsyncWidgetBuilder<T> builder, {bool refresh = false}) {
     return FutureBuilder(
       future: refresh
           ? reload()
@@ -102,7 +102,7 @@ class FutureLazyDynamicCan<T> extends DynamicCan<T> {
     return await reload();
   }
 
-  Widget widgetBuilder(AsyncWidgetBuilder builder, {bool refresh = false}) {
+  Widget widgetBuilder(AsyncWidgetBuilder<T> builder, {bool refresh = false}) {
     return FutureBuilder(
       future: refresh
           ? reload()
