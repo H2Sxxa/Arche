@@ -1,4 +1,5 @@
 import 'package:arche/arche.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 class ConstCan<T> {
@@ -10,9 +11,9 @@ class ConstCan<T> {
   Optional<T> get optValue => Optional(value: value);
 }
 
-class LazyCan<T> extends ConstCan<T> {
-  final T Function() builder;
-  const LazyCan({required this.builder}) : super(builder);
+class LazyConstCan<T> extends ConstCan<T> {
+  final ValueGetter<T> builder;
+  const LazyConstCan({required this.builder}) : super(builder);
   @override
   T get value => super.value ?? reload();
 
@@ -22,9 +23,9 @@ class LazyCan<T> extends ConstCan<T> {
   }
 }
 
-class FutureLazyCan<T> extends ConstCan<T> {
-  final Future<T> Function() builder;
-  const FutureLazyCan({required this.builder}) : super(builder);
+class FutureLazyConstCan<T> extends ConstCan<T> {
+  final AsyncValueGetter<T> builder;
+  const FutureLazyConstCan({required this.builder}) : super(builder);
   @override
   T? get value {
     if (super.value != null) {
@@ -45,8 +46,51 @@ class FutureLazyCan<T> extends ConstCan<T> {
       future: refresh
           ? reload()
           : Future(() async {
-              if (super.value != null) {
-                return super.value as T;
+              var recent = super.value;
+              if (recent != null) {
+                return recent;
+              }
+              return await reload();
+            }),
+      builder: builder,
+    );
+  }
+}
+
+class DynamicCan<T> {
+  T? value;
+  DynamicCan([this.value]);
+  Optional<T> get optValue => Optional(value: value);
+}
+
+class LazyDynamicCan<T> extends DynamicCan<T> {
+  final ValueGetter<T> builder;
+  LazyDynamicCan({required this.builder});
+
+  T reload() {
+    value = builder();
+    return value!;
+  }
+}
+
+class FutureLazyDynamicCan<T> extends DynamicCan<T> {
+  final AsyncValueGetter builder;
+
+  FutureLazyDynamicCan({required this.builder});
+
+  Future<T> reload() async {
+    value = await builder();
+    return value!;
+  }
+
+  Widget widgetBuilder(AsyncWidgetBuilder builder, {bool refresh = false}) {
+    return FutureBuilder(
+      future: refresh
+          ? reload()
+          : Future(() async {
+              var recent = super.value;
+              if (recent != null) {
+                return recent;
               }
               return await reload();
             }),
