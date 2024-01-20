@@ -30,3 +30,26 @@ class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
     return widget.builder(context, _value, update);
   }
 }
+
+class ConditionShrink extends StatelessWidget {
+  final bool value;
+  final Widget child;
+  const ConditionShrink({super.key, required this.value, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return value ? child : const SizedBox.shrink();
+  }
+}
+
+class ConditionBuilderShrink extends StatelessWidget {
+  final bool Function() builder;
+  final Widget child;
+  const ConditionBuilderShrink(
+      {super.key, required this.builder, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return builder() ? child : const SizedBox.shrink();
+  }
+}
