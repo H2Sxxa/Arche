@@ -1,36 +1,37 @@
 import 'package:arche/extensions/functions.dart';
 
 class Optional<V> {
-  late final V? _inner;
+  final V? value;
 
-  static Optional<void> empty = Optional(value: null);
+  static Optional<R> empty<R>() => const Optional().cast();
 
-  Optional({V? value}) {
-    _inner = value;
+  const Optional({this.value});
+
+  Optional<R> cast<R>() {
+    return Optional<R>(value: value as R?);
   }
 
   bool isSome() {
-    return _inner != null;
+    return value != null;
   }
 
   bool isNull() {
-    return _inner == null;
+    return value == null;
   }
 
   R? ifNull<R>(R Function(V value) function) {
-    return isNull() ? null : function(value);
+    return isNull() ? null : function(value as V);
   }
 
   R? ifSome<R>(R Function(V value) function) {
-    return isSome() ? null : function(value);
+    return isSome() ? null : function(value as V);
   }
 
-  V get value => _inner!;
   V orElse(V defaultValue) {
-    return _inner ?? defaultValue;
+    return value ?? defaultValue;
   }
 
   V orElseGet(FunctionCallback<V> other) {
-    return _inner ?? other();
+    return value ?? other();
   }
 }

@@ -169,9 +169,7 @@ class NavigationView extends StatefulWidget {
 }
 
 class StateNavigationView extends State<NavigationView>
-    with TickerProviderStateMixin {
-  int _currentIndex = 0;
-  final List _pastIndex = [];
+    with TickerProviderStateMixin, IndexedNavigatorStateMixin {
   late bool extended;
   late AnimationController animationIconCtrl;
 
@@ -184,33 +182,11 @@ class StateNavigationView extends State<NavigationView>
         return Optional(value: element.key);
       }
     }
-    return Optional();
-  }
-
-  void pushIndex(int index) {
-    setState(() {
-      _pastIndex.add(_currentIndex);
-      _currentIndex = index;
-    });
-  }
-
-  void pop() {
-    if (_pastIndex.isNotEmpty) {
-      setState(() => _currentIndex = _pastIndex.removeLast());
-    }
-  }
-
-  void replace(int index) {
-    setState(() {
-      if (_pastIndex.isNotEmpty) {
-        _pastIndex.last = index;
-      }
-      _currentIndex = index;
-    });
+    return Optional.empty();
   }
 
   void replaceName(String name) =>
-      getIndex(name).ifSome((value) => replace(value));
+      getIndex(name).ifSome((value) => replaceIndex(value));
 
   @override
   void initState() {
@@ -352,5 +328,36 @@ class StateNavigationView extends State<NavigationView>
       _buildHorizontal,
       this,
     );
+  }
+}
+
+mixin IndexedNavigatorStateMixin<T extends StatefulWidget> on State<T> {
+  int _currentIndex = 0;
+  final List<int> _recentIndexs = [];
+  void pushIndex(int index) {
+    setState(() {
+      _recentIndexs.add(_currentIndex);
+      _currentIndex = index;
+    });
+  }
+
+  int? popIndex() {
+    if (_recentIndexs.isNotEmpty) {
+      var index = _recentIndexs.removeLast();
+      setState(() {
+        _currentIndex = index;
+      });
+      return index;
+    }
+    return null;
+  }
+
+  void replaceIndex(int index) {
+    setState(() {
+      if (_recentIndexs.isNotEmpty) {
+        _recentIndexs.last = index;
+      }
+      _currentIndex = index;
+    });
   }
 }
