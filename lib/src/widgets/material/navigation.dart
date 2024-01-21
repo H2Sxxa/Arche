@@ -220,7 +220,7 @@ class StateNavigationView extends State<NavigationView>
     return NavigationBar(
       destinations: widget.items.map((e) => e.buildVertical()).toList(),
       onDestinationSelected: pushIndex,
-      selectedIndex: _currentIndex,
+      selectedIndex: currentIndex,
       elevation: widget.elevation,
       indicatorColor: widget.indicatorColor,
       backgroundColor: widget.backgroundColor,
@@ -273,7 +273,7 @@ class StateNavigationView extends State<NavigationView>
       trailing: config?.trailing,
       destinations: widget.items.map((e) => e.buildHorizontal()).toList(),
       onDestinationSelected: pushIndex,
-      selectedIndex: _currentIndex,
+      selectedIndex: currentIndex,
       key: widget.navKey,
       selectedIconTheme: config?.selectedIconTheme,
       labelType: extended ? NavigationRailLabelType.none : labelType,
@@ -309,14 +309,14 @@ class StateNavigationView extends State<NavigationView>
   Widget get content => Expanded(
         child: Padding(
           padding:
-              widget.items[_currentIndex].padding ?? const EdgeInsets.all(12),
+              widget.items[currentIndex].padding ?? const EdgeInsets.all(12),
           child: AnimatedSwitcher(
               duration: widget.switchDuration ?? Durations.medium4,
               transitionBuilder: widget.transitionBuilder ??
                   (child, animation) =>
                       AnimatedSwitcher.defaultTransitionBuilder(
                           child, animation),
-              child: widget.items[_currentIndex].page),
+              child: widget.items[currentIndex].page),
         ),
       );
   @override
@@ -332,20 +332,21 @@ class StateNavigationView extends State<NavigationView>
 }
 
 mixin IndexedNavigatorStateMixin<T extends StatefulWidget> on State<T> {
-  int _currentIndex = 0;
-  final List<int> _recentIndexs = [];
+  int currentIndex = 0;
+  final List<int> recentIndexs = [];
+
   void pushIndex(int index) {
     setState(() {
-      _recentIndexs.add(_currentIndex);
-      _currentIndex = index;
+      recentIndexs.add(currentIndex);
+      currentIndex = index;
     });
   }
 
   int? popIndex() {
-    if (_recentIndexs.isNotEmpty) {
-      var index = _recentIndexs.removeLast();
+    if (recentIndexs.isNotEmpty) {
+      var index = recentIndexs.removeLast();
       setState(() {
-        _currentIndex = index;
+        currentIndex = index;
       });
       return index;
     }
@@ -354,10 +355,10 @@ mixin IndexedNavigatorStateMixin<T extends StatefulWidget> on State<T> {
 
   void replaceIndex(int index) {
     setState(() {
-      if (_recentIndexs.isNotEmpty) {
-        _recentIndexs.last = index;
+      if (recentIndexs.isNotEmpty) {
+        recentIndexs.last = index;
       }
-      _currentIndex = index;
+      currentIndex = index;
     });
   }
 }
