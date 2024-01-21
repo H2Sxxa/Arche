@@ -7,5 +7,6 @@ export 'package:arche/src/widgets/material/navigation.dart'
         NavigationLabelType,
         StateNavigationView,
         HorizontalItemConfig,
-        VerticalItemConfig;
+        VerticalItemConfig,
+        IndexedNavigatorStateMixin;
 export 'package:arche/src/widgets/material/card.dart' show CardButton;
