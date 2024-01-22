@@ -16,7 +16,7 @@ class TypeProvider {
 
   T provideof<T>({T? instance}) {
     if (instance != null) {
-      provide(instance);
+      provide<T>(instance);
     }
     return of<T>();
   }
@@ -41,11 +41,11 @@ class TypeProvider {
   }
 }
 
-class Subordinate {
+class Subordinate<T extends Subordinate<dynamic>> {
   TypeProvider? provider;
   Subordinate() {
     if (provider != null) {
-      provider!.provideof(instance: this);
+      provider!.provideof<T>(instance: this as T);
     }
   }
 

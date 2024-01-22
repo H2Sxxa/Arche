@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:arche/arche.dart';
 import 'package:flutter/services.dart';
 
-class ArcheConfig<K, V> extends Subordinate with KVIO<K, V> {
+class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
   @override
-  TypeProvider get provider => singleton.provideof(instance: ArcheBus());
+  TypeProvider get provider => ArcheBus();
 
   late MapSerializer<K, V, String> serializer = JsonSerializer();
   bool _memory = false;

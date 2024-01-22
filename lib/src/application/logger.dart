@@ -15,9 +15,10 @@ class Log {
   }
 }
 
-class ArcheLogger extends Subordinate {
+class ArcheLogger extends Subordinate<ArcheLogger> {
   @override
-  TypeProvider get provider => singleton.provideof(instance: ArcheBus());
+  TypeProvider get provider => ArcheBus();
+
   late Translator<Loglevel, Color> colorTranslator;
   final List<Log> _logs = [];
 

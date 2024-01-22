@@ -17,7 +17,10 @@ void main() {
   test("Test provider", () {
     ArcheBus().provide(ArcheConfig.memory());
 
-    debugPrint((singleton.of<ArcheBus>()).getConfig.toString());
+    debugWriteln(ArcheBus.bus.getConfig.toString());
+
+    debugWriteln(ArcheLogger().provider.has<ArcheLogger>());
+    debugWriteln(ArcheLogger().provider.has<ArcheLogger>());
   });
 
   test("Provider to widget", () {
