@@ -24,14 +24,14 @@ class MyApp extends StatelessWidget {
             NavigationItem(
               icon: const Icon(Icons.home),
               label: "Home",
-              page: Card(
-                  child: Center(
-                child: CardButton(
-                  size: Size.infinite,
+              page: Center(
+                child: CardMenuButton(
+                  size: const Size.square(100),
                   child: const Text("hello"),
-                  onTap: () {},
+                  itemBuilder: (context) =>
+                      [const PopupMenuItem(child: Text("hello"))],
                 ),
-              )),
+              ),
             ),
             const NavigationItem(
               icon: Icon(Icons.settings),
