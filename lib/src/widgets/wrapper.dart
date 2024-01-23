@@ -1,11 +1,24 @@
 import 'package:flutter/widgets.dart';
 
+typedef ValueUpdateChanged<V> = Widget Function(
+  BuildContext context,
+  V value,
+  ValueChanged<V> update,
+);
+
 class ValueStateBuilder<V> extends StatefulWidget {
-  final Widget Function(BuildContext context, V value, ValueChanged<V> update)
-      builder;
+  final ValueUpdateChanged<V> builder;
+
+  final ValueUpdateChanged<V>? initState;
+
   final V initial;
-  const ValueStateBuilder(
-      {required this.builder, required this.initial, super.key});
+
+  const ValueStateBuilder({
+    required this.builder,
+    required this.initial,
+    this.initState,
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => StateValueStateBuilder<V>();
@@ -17,6 +30,10 @@ class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
   void initState() {
     super.initState();
     _value = widget.initial;
+    var hooker = widget.initState;
+    if (hooker != null) {
+      hooker(context, _value, update);
+    }
   }
 
   void update(V value) {
