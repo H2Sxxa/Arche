@@ -1,16 +1,14 @@
 import 'package:flutter/widgets.dart';
 
-typedef ValueUpdateChanged<V> = Widget Function(
+typedef WidgetValueUpdateChanged<V> = Widget Function(
   BuildContext context,
   V value,
   ValueChanged<V> update,
 );
 
 class ValueStateBuilder<V> extends StatefulWidget {
-  final ValueUpdateChanged<V> builder;
-
-  final ValueUpdateChanged<V>? initState;
-
+  final WidgetValueUpdateChanged<V> builder;
+  final WidgetValueUpdateChanged<V>? initState;
   final V initial;
 
   const ValueStateBuilder({
@@ -26,6 +24,7 @@ class ValueStateBuilder<V> extends StatefulWidget {
 
 class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
   late V _value;
+
   @override
   void initState() {
     super.initState();
