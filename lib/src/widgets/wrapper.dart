@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 
-typedef WidgetValueUpdateChanged<V> = Widget Function(
+typedef ValueUpdateChanged<V, R> = R Function(
   BuildContext context,
   V value,
   ValueChanged<V> update,
 );
 
 class ValueStateBuilder<V> extends StatefulWidget {
-  final WidgetValueUpdateChanged<V> builder;
-  final WidgetValueUpdateChanged<V>? initState;
+  final ValueUpdateChanged<V, Widget> builder;
+  final ValueUpdateChanged<V, dynamic>? initState;
   final V initial;
 
   const ValueStateBuilder({
