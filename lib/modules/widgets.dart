@@ -1,2 +1,2 @@
 export 'package:arche/src/widgets/wrapper.dart'
-    show ValueStateBuilder, StateValueStateBuilder, ValueUpdateChanged;
+    show ValueStateBuilder, StateValueStateBuilder, ValueStateBuilderFunction;
