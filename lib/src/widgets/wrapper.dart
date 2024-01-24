@@ -34,7 +34,7 @@ class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
 
   void update(V value) {
     setState(() {
-      value = value;
+      this.value = value;
     });
   }
 
