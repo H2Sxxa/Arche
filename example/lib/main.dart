@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
               label: "Home",
               page: Center(
                 child: CardMenuButton(
-                  size: const Size.square(100),
                   child: const Text("hello"),
                   itemBuilder: (context) =>
                       [const PopupMenuItem(child: Text("hello"))],

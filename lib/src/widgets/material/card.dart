@@ -6,14 +6,14 @@ class CardButton extends StatelessWidget {
   final GestureTapCallback? onTap;
   final GestureLongPressCallback? onLongPress;
   final GestureDoubleTapCallback? onDoubleTap;
-  final Size size;
+  final Size? size;
   final double? elevation;
   final ShapeBorder? shape;
   final Color? color;
   const CardButton({
     super.key,
     required this.child,
-    required this.size,
+    this.size,
     this.elevation,
     this.color,
     this.shape,
@@ -46,7 +46,7 @@ class CardButton extends StatelessWidget {
 
 class CardMenuButton<T> extends StatelessWidget {
   final PopupMenuItemBuilder<T> itemBuilder;
-  final Size size;
+  final Size? size;
   final double? elevation;
   final Color? color;
   final Widget? child;
@@ -56,7 +56,7 @@ class CardMenuButton<T> extends StatelessWidget {
   const CardMenuButton({
     super.key,
     required this.itemBuilder,
-    required this.size,
+    this.size,
     this.elevation,
     this.color,
     this.child,
