@@ -5,13 +5,13 @@ typedef ValueStateBuilderFunction<V, R> = R Function(
 
 class ValueStateBuilder<V> extends StatefulWidget {
   final ValueStateBuilderFunction<V, Widget> builder;
-  final ValueStateBuilderFunction<V, dynamic>? initState;
+  final ValueStateBuilderFunction<V, dynamic>? onInit;
   final V initial;
 
   const ValueStateBuilder({
     required this.builder,
     required this.initial,
-    this.initState,
+    this.onInit,
     super.key,
   });
 
@@ -26,7 +26,7 @@ class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
   void initState() {
     super.initState();
     value = widget.initial;
-    var hooker = widget.initState;
+    var hooker = widget.onInit;
     if (hooker != null) {
       hooker(context, this);
     }
