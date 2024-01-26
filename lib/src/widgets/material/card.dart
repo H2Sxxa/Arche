@@ -24,17 +24,17 @@ class CardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: elevation,
-      shape: shape,
-      color: color,
-      child: InkWell(
-        onTap: onTap,
-        onDoubleTap: onDoubleTap,
-        onLongPress: onLongPress,
-        borderRadius: BorderRadius.circular(10),
-        child: SizedBox.fromSize(
-          size: size,
+    return SizedBox.fromSize(
+      size: size,
+      child: Card(
+        elevation: elevation,
+        shape: shape,
+        color: color,
+        child: InkWell(
+          onTap: onTap,
+          onDoubleTap: onDoubleTap,
+          onLongPress: onLongPress,
+          borderRadius: BorderRadius.circular(10),
           child: Center(
             child: child,
           ),
@@ -67,20 +67,20 @@ class CardMenuButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: color,
-      elevation: elevation,
-      shape: shape,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Material(
-          color: Colors.transparent,
-          child: PopupMenuButton<T>(
-            itemBuilder: itemBuilder,
-            tooltip: tooltip,
-            position: position ?? PopupMenuPosition.under,
-            child: SizedBox.fromSize(
-              size: size,
+    return SizedBox.fromSize(
+      size: size,
+      child: Card(
+        color: color,
+        elevation: elevation,
+        shape: shape,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Material(
+            color: Colors.transparent,
+            child: PopupMenuButton<T>(
+              itemBuilder: itemBuilder,
+              tooltip: tooltip,
+              position: position ?? PopupMenuPosition.under,
               child: Center(
                 child: child,
               ),
