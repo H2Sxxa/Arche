@@ -22,6 +22,9 @@ class ArcheLogger extends Subordinate<ArcheLogger> {
   late Translator<Loglevel, Color> colorTranslator;
   final List<Log> _logs = [];
 
+  String Function(Log log)? formatter;
+  bool visible = true;
+
   Translator<Loglevel, Color> translateColor({
     required Color info,
     required Color warn,
@@ -37,16 +40,18 @@ class ArcheLogger extends Subordinate<ArcheLogger> {
     return colorTranslator;
   }
 
-  void log(Loglevel level, String message) {
-    var log = Log(DateTime.now(), message, level);
-    debugWrite(log.toString());
+  void log(Loglevel level, message) {
+    var log = Log(DateTime.now(), message.toString(), level);
+    if (visible) {
+      debugWrite(formatter != null ? formatter!(log) : log.toString());
+    }
     _logs.add(log);
   }
 
-  void info(String message) => log(Loglevel.info, message);
-  void warn(String message) => log(Loglevel.warn, message);
-  void error(String message) => log(Loglevel.error, message);
-  void debug(String message) => log(Loglevel.debug, message);
+  void info(message) => log(Loglevel.info, message);
+  void warn(message) => log(Loglevel.warn, message);
+  void error(message) => log(Loglevel.error, message);
+  void debug(message) => log(Loglevel.debug, message);
 
   List<Log> getLogs() {
     return _logs;

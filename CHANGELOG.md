@@ -1,3 +1,7 @@
+## 0.0.5
+
+ - Add `ConfigEntry` and Improve the `ArcheLogger`
+
 ## 0.0.4
 
  - New Widget `CardButton`, `CardMenuButton`, `ValueStateBuilder`

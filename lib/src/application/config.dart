@@ -1,7 +1,31 @@
 import 'dart:io';
 
 import 'package:arche/arche.dart';
+import 'package:arche/src/abc/kvrw.dart';
 import 'package:flutter/services.dart';
+
+class ConfigEntry<V> with BaseIO<V> {
+  final ArcheConfig config;
+  final String key;
+  const ConfigEntry(this.config, this.key);
+
+  @override
+  void delete() => config.delete(key);
+
+  @override
+  V get() => config.get(key);
+
+  @override
+  bool has() => config.has(key);
+
+  @override
+  void write(V value) => config.write(key, value);
+
+  static ConfigEntry Function<T>(String key) withConfig(ArcheConfig config) {
+    currying<T>(String key) => ConfigEntry<T>(config, key);
+    return currying;
+  }
+}
 
 class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
   @override
@@ -102,7 +126,7 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
 
   /// Read / Write
   @override
-  void delkey(K key) {
+  void delete(K key) {
     _memorymap.remove(key);
     syncTo();
   }
