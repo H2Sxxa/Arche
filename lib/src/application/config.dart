@@ -21,7 +21,7 @@ class ConfigEntry<V> with BaseIO<V> {
   @override
   void write(V value) => config.write(key, value);
 
-  static ConfigEntry Function<T>(String key) withConfig(ArcheConfig config) {
+  static ConfigEntry<T> Function<T>(String key) withConfig(ArcheConfig config) {
     currying<T>(String key) => ConfigEntry<T>(config, key);
     return currying;
   }
