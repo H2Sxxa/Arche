@@ -12,25 +12,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: Scaffold(
-            body: NavigationView(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: Scaffold(
+        body: NavigationView.pageView(
+          reversed: true,
           direction: Axis.horizontal,
           items: [
             NavigationItem(
               icon: const Icon(Icons.home),
               label: "Home",
-              page: Center(
-                child: CardMenuButton(
-                  size: const Size.square(120),
-                  child: const Text("hello"),
-                  itemBuilder: (context) =>
-                      [const PopupMenuItem(child: Text("hello"))],
-                ),
+              page: CardMenuButton(
+                size: const Size.square(120),
+                child: const Text("hello"),
+                itemBuilder: (context) =>
+                    [const PopupMenuItem(child: Text("hello"))],
               ),
             ),
             const NavigationItem(
@@ -41,6 +40,8 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }

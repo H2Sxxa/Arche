@@ -56,8 +56,8 @@ class Subordinate<T extends Subordinate<dynamic>> {
     return value;
   }
 
-  T relevant<T>() {
-    return provider!.of<T>();
+  R relevant<R>() {
+    return provider!.of<R>();
   }
 }
 

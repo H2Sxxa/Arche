@@ -5,6 +5,7 @@ export 'package:arche/src/widgets/material/navigation.dart'
         NavigationHorizontalConfig,
         NavigationVerticalConfig,
         NavigationLabelType,
+        NavBuilder,
         StateNavigationView,
         HorizontalItemConfig,
         VerticalItemConfig,

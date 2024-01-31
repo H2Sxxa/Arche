@@ -1,5 +1,6 @@
 import 'package:arche/src/impl/optional.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 typedef NavBuilder = Widget Function(
   BuildContext context,
@@ -133,8 +134,8 @@ class NavigationVerticalConfig {
 class NavigationView extends StatefulWidget {
   final Key? navKey;
   final List<NavigationItem> items;
-  final Widget Function(Widget, Animation<double>)? transitionBuilder;
-  final Duration? switchDuration;
+  final Duration? animationDuration;
+
   final Axis direction;
   final bool reversed;
   final NavigationHorizontalConfig? horizontal;
@@ -144,14 +145,24 @@ class NavigationView extends StatefulWidget {
   final Color? backgroundColor;
   final double? elevation;
   final NavigationLabelType? labelType;
-
   final NavBuilder? builder;
+
+  /// usePageView == true
+  final bool usePageView;
+  final Curve? pageViewCurve;
+
+  /// usePageView == false
+  final Curve? switchInCurve;
+  final Curve? switchOutCurve;
+  final AnimatedSwitcherTransitionBuilder? transitionBuilder;
+  final AnimatedSwitcherLayoutBuilder? layoutBuilder;
+
   const NavigationView({
     super.key,
     required this.items,
     this.navKey,
     this.transitionBuilder,
-    this.switchDuration,
+    this.animationDuration,
     this.direction = Axis.horizontal,
     this.reversed = false,
     this.horizontal,
@@ -161,8 +172,57 @@ class NavigationView extends StatefulWidget {
     this.backgroundColor,
     this.elevation,
     this.labelType,
+    this.switchInCurve,
+    this.switchOutCurve,
+    this.pageViewCurve,
+    this.layoutBuilder,
+    this.usePageView = false,
     this.builder,
   });
+
+  const NavigationView.switcher({
+    super.key,
+    this.navKey,
+    required this.items,
+    this.animationDuration,
+    required this.direction,
+    required this.reversed,
+    this.horizontal,
+    this.vertical,
+    this.indicatorColor,
+    this.indicatorShape,
+    this.backgroundColor,
+    this.elevation,
+    this.labelType,
+    this.builder,
+    this.switchInCurve,
+    this.switchOutCurve,
+    this.transitionBuilder,
+    this.layoutBuilder,
+  })  : usePageView = false,
+        pageViewCurve = null;
+
+  const NavigationView.pageView({
+    super.key,
+    this.navKey,
+    required this.items,
+    this.animationDuration,
+    required this.direction,
+    required this.reversed,
+    this.horizontal,
+    this.vertical,
+    this.indicatorColor,
+    this.indicatorShape,
+    this.backgroundColor,
+    this.elevation,
+    this.labelType,
+    this.pageViewCurve,
+    this.builder,
+  })  : usePageView = true,
+        switchInCurve = null,
+        switchOutCurve = null,
+        layoutBuilder = null,
+        transitionBuilder = null;
 
   @override
   State<StatefulWidget> createState() => StateNavigationView();
@@ -172,6 +232,7 @@ class StateNavigationView extends State<NavigationView>
     with TickerProviderStateMixin, IndexedNavigatorStateMixin {
   late bool extended;
   late AnimationController animationIconCtrl;
+  late PageController pageController;
 
   void pushName(String name) =>
       getIndex(name).ifSome((value) => pushIndex(value));
@@ -194,13 +255,16 @@ class StateNavigationView extends State<NavigationView>
 
     extended = widget.horizontal?.initialExtended ?? false;
     animationIconCtrl = AnimationController(vsync: this)
-      ..duration = Durations.medium4;
+      ..duration = widget.animationDuration ?? Durations.medium4;
+
+    pageController = PageController();
   }
 
   @override
   void dispose() {
     super.dispose();
     animationIconCtrl.dispose();
+    pageController.dispose();
   }
 
   Widget _buildVertical() {
@@ -250,16 +314,20 @@ class StateNavigationView extends State<NavigationView>
     }
     Widget? leading = config?.leading ??
         IconButton(
-            onPressed: () => setState(() {
-                  extended = !extended;
-                  extended
-                      ? animationIconCtrl.forward()
-                      : animationIconCtrl.reverse();
-                }),
-            icon: AnimatedIcon(
+          onPressed: () => setState(() {
+            extended = !extended;
+            extended
+                ? animationIconCtrl.forward()
+                : animationIconCtrl.reverse();
+          }),
+          icon: Transform.rotate(
+            angle: widget.reversed ? math.pi : 0,
+            child: AnimatedIcon(
               icon: AnimatedIcons.menu_arrow,
               progress: animationIconCtrl,
-            ));
+            ),
+          ),
+        );
     if (config?.leading == null && labelType != NavigationRailLabelType.none) {
       leading = null;
     }
@@ -306,17 +374,49 @@ class StateNavigationView extends State<NavigationView>
     return isHorizontal ? Row(children: children) : Column(children: children);
   }
 
+  @override
+  void pushIndex(int index) {
+    super.pushIndex(index);
+    if (widget.usePageView) {
+      pageController.animateToPage(
+        index,
+        duration: widget.animationDuration ?? Durations.medium4,
+        curve: widget.pageViewCurve ?? Curves.fastLinearToSlowEaseIn,
+      );
+    }
+  }
+
+  @override
+  int? popIndex() {
+    var index = super.popIndex();
+    if (index != null && widget.usePageView) {
+      pageController.animateToPage(
+        index,
+        duration: widget.animationDuration ?? Durations.medium4,
+        curve: widget.pageViewCurve ?? Curves.linear,
+      );
+    }
+    return index;
+  }
+
   Widget get content => Expanded(
         child: Padding(
           padding:
               widget.items[currentIndex].padding ?? const EdgeInsets.all(12),
-          child: AnimatedSwitcher(
-              duration: widget.switchDuration ?? Durations.medium4,
-              transitionBuilder: widget.transitionBuilder ??
-                  (child, animation) =>
-                      AnimatedSwitcher.defaultTransitionBuilder(
-                          child, animation),
-              child: widget.items[currentIndex].page),
+          child: widget.usePageView
+              ? PageView(
+                  controller: pageController,
+                  children: widget.items.map((e) => e.page).toList(),
+                )
+              : AnimatedSwitcher(
+                  duration: widget.animationDuration ?? Durations.medium4,
+                  switchInCurve: widget.switchInCurve ?? Curves.linear,
+                  switchOutCurve: widget.switchOutCurve ?? Curves.linear,
+                  transitionBuilder: widget.transitionBuilder ??
+                      AnimatedSwitcher.defaultTransitionBuilder,
+                  layoutBuilder: widget.layoutBuilder ??
+                      AnimatedSwitcher.defaultLayoutBuilder,
+                  child: widget.items[currentIndex].page),
         ),
       );
   @override

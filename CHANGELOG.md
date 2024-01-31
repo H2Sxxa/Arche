@@ -1,6 +1,10 @@
 ## 0.0.4
 
- - New Widget `CardButton`
+ - New Widget `CardButton`, `CardMenuButton`, `ValueStateBuilder`
+ - Try the `NavigationView.pageview`
+ - Add Some Cans to hold a value
+ - Fix `ArcheBus` and `Subordinate` serious problems
+ - Some optimize and fix
 
 ## 0.0.3
 
