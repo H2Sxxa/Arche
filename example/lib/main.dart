@@ -28,15 +28,31 @@ class MyApp extends StatelessWidget {
               page: CardMenuButton(
                 size: const Size.square(120),
                 child: const Text("hello"),
-                itemBuilder: (context) =>
-                    [const PopupMenuItem(child: Text("hello"))],
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: const Text("hello"),
+                    onTap: () => ComplexDialog(
+                        child: const Dialog.fullscreen(
+                      child: ProgressIndicatorWidget(),
+                    )).prompt(context: context),
+                  )
+                ],
               ),
             ),
-            const NavigationItem(
-              icon: Icon(Icons.settings),
+            NavigationItem(
+              icon: const Icon(Icons.settings),
               label: "Settings",
               page: Center(
-                child: Text("Settings"),
+                child: ProgressIndicatorWidget(
+                  onInit: (context, data, updateText, updateProgress) async {
+                    for (var i = 0; i < 10; i++) {
+                      debugWriteln(i);
+                      updateProgress((i + 1) / 10);
+
+                      await Future.delayed(const Duration(seconds: 1));
+                    }
+                  },
+                ),
               ),
             ),
           ],

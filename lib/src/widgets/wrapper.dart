@@ -6,11 +6,11 @@ typedef ValueStateBuilderFunction<V, R> = R Function(
 class ValueStateBuilder<V> extends StatefulWidget {
   final ValueStateBuilderFunction<V, Widget> builder;
   final ValueStateBuilderFunction<V, dynamic>? onInit;
-  final V initial;
+  final V init;
 
   const ValueStateBuilder({
     required this.builder,
-    required this.initial,
+    required this.init,
     this.onInit,
     super.key,
   });
@@ -25,10 +25,10 @@ class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
   @override
   void initState() {
     super.initState();
-    value = widget.initial;
-    var hooker = widget.onInit;
-    if (hooker != null) {
-      hooker(context, this);
+    value = widget.init;
+    var onInit = widget.onInit;
+    if (onInit != null) {
+      onInit(context, this);
     }
   }
 
