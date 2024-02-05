@@ -1,4 +1,5 @@
 import 'package:arche/arche.dart';
+import 'package:arche/extensions/dialogs.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,26 +20,29 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: NavigationView.pageView(
-          reversed: true,
-          direction: Axis.horizontal,
           items: [
             NavigationItem(
-              icon: const Icon(Icons.home),
-              label: "Home",
-              page: CardMenuButton(
-                size: const Size.square(120),
-                child: const Text("hello"),
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: const Text("hello"),
-                    onTap: () => ComplexDialog(
-                        child: const Dialog.fullscreen(
-                      child: ProgressIndicatorWidget(),
-                    )).prompt(context: context),
-                  )
-                ],
-              ),
-            ),
+                icon: const Icon(Icons.home),
+                label: "Home",
+                page: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Builder(
+                        builder: (context) => CardButton(
+                            size: const Size.square(120),
+                            child: const Text("hello"),
+                            onTap: () => const ComplexDialog()
+                                .withContext(context: context)
+                              ..input(
+                                context: context,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                              ).then(debugWriteln)
+                              ..confirm(context: context).then(debugWriteln)
+                              ..license()),
+                      )
+                    ])),
             NavigationItem(
               icon: const Icon(Icons.settings),
               label: "Settings",

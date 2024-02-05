@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 
 import 'dart:io';
 
-void debugWrite(message) {
+void debugWrite([message = ""]) {
   if (kDebugMode) {
     stdout.write(message.toString());
   }
 }
 
-void debugWriteln(message) {
+void debugWriteln([message = ""]) {
   debugWrite("$message\n");
 }

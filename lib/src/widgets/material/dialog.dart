@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 @immutable
-class ComplexDialog<R> {
+class ComplexDialog {
   final bool barrierDismissible;
   final Color? barrierColor;
   final String? barrierLabel;
@@ -16,6 +16,8 @@ class ComplexDialog<R> {
   /// If `builder` is null, the child will be `() => child ?? const SizedBox.shrink()`
   final WidgetBuilder? builder;
   final Widget? child;
+
+  final BuildContext? context;
   const ComplexDialog({
     this.anchorPoint,
     this.barrierColor,
@@ -27,17 +29,22 @@ class ComplexDialog<R> {
     this.useSafeArea = true,
     this.builder,
     this.child,
+    this.context,
   });
 
-  ComplexDialog<R> withBuilder(WidgetBuilder builder) {
+  ComplexDialog withBuilder(WidgetBuilder builder) {
     return copy(builder: builder);
   }
 
-  ComplexDialog<R> withChild(Widget child) {
+  ComplexDialog withChild(Widget child) {
     return copy(child: child);
   }
 
-  ComplexDialog<R> copy({
+  ComplexDialog withContext<R>({required BuildContext context}) {
+    return copy(context: context);
+  }
+
+  ComplexDialog copy({
     WidgetBuilder? builder,
     Widget? child,
     bool? barrierDismissible,
@@ -48,9 +55,11 @@ class ComplexDialog<R> {
     RouteSettings? routeSettings,
     Offset? anchorPoint,
     TraversalEdgeBehavior? traversalEdgeBehavior,
+    BuildContext? context,
   }) {
     return ComplexDialog(
       builder: builder ?? this.builder,
+      context: context ?? this.context,
       child: child ?? this.child,
       barrierColor: barrierColor ?? this.barrierColor,
       barrierDismissible: barrierDismissible ?? this.barrierDismissible,
@@ -63,9 +72,9 @@ class ComplexDialog<R> {
     );
   }
 
-  FutureOr<R?> prompt({required BuildContext context}) {
+  FutureOr<R?> prompt<R>({BuildContext? context}) {
     return showDialog<R>(
-      context: context,
+      context: context ?? this.context!,
       builder: builder ?? (context) => child ?? const SizedBox.shrink(),
       barrierColor: barrierColor,
       barrierDismissible: barrierDismissible,
@@ -78,7 +87,6 @@ class ComplexDialog<R> {
     );
   }
 
-  FutureOr<R?> block({required BuildContext context}) async {
-    return await prompt(context: context);
-  }
+  NavigatorState navigator(BuildContext? context) =>
+      Navigator.of(context ?? this.context!);
 }
