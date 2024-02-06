@@ -32,17 +32,10 @@ class ComplexDialog {
     this.context,
   });
 
-  ComplexDialog withBuilder(WidgetBuilder builder) {
-    return copy(builder: builder);
-  }
-
-  ComplexDialog withChild(Widget child) {
-    return copy(child: child);
-  }
-
-  ComplexDialog withContext<R>({required BuildContext context}) {
-    return copy(context: context);
-  }
+  ComplexDialog withBuilder(WidgetBuilder builder) => copy(builder: builder);
+  ComplexDialog withChild(Widget child) => copy(child: child);
+  ComplexDialog withContext<R>({required BuildContext context}) =>
+      copy(context: context);
 
   ComplexDialog copy({
     WidgetBuilder? builder,
@@ -56,36 +49,33 @@ class ComplexDialog {
     Offset? anchorPoint,
     TraversalEdgeBehavior? traversalEdgeBehavior,
     BuildContext? context,
-  }) {
-    return ComplexDialog(
-      builder: builder ?? this.builder,
-      context: context ?? this.context,
-      child: child ?? this.child,
-      barrierColor: barrierColor ?? this.barrierColor,
-      barrierDismissible: barrierDismissible ?? this.barrierDismissible,
-      barrierLabel: barrierLabel ?? this.barrierLabel,
-      traversalEdgeBehavior:
-          traversalEdgeBehavior ?? this.traversalEdgeBehavior,
-      anchorPoint: anchorPoint ?? this.anchorPoint,
-      useSafeArea: useSafeArea ?? this.useSafeArea,
-      useRootNavigator: useRootNavigator ?? this.useRootNavigator,
-    );
-  }
+  }) =>
+      ComplexDialog(
+        builder: builder ?? this.builder,
+        context: context ?? this.context,
+        child: child ?? this.child,
+        barrierColor: barrierColor ?? this.barrierColor,
+        barrierDismissible: barrierDismissible ?? this.barrierDismissible,
+        barrierLabel: barrierLabel ?? this.barrierLabel,
+        traversalEdgeBehavior:
+            traversalEdgeBehavior ?? this.traversalEdgeBehavior,
+        anchorPoint: anchorPoint ?? this.anchorPoint,
+        useSafeArea: useSafeArea ?? this.useSafeArea,
+        useRootNavigator: useRootNavigator ?? this.useRootNavigator,
+      );
 
-  FutureOr<R?> prompt<R>({BuildContext? context}) {
-    return showDialog<R>(
-      context: context ?? this.context!,
-      builder: builder ?? (context) => child ?? const SizedBox.shrink(),
-      barrierColor: barrierColor,
-      barrierDismissible: barrierDismissible,
-      barrierLabel: barrierLabel,
-      traversalEdgeBehavior: traversalEdgeBehavior,
-      anchorPoint: anchorPoint,
-      routeSettings: routeSettings,
-      useRootNavigator: useRootNavigator,
-      useSafeArea: useSafeArea,
-    );
-  }
+  FutureOr<R?> prompt<R>({BuildContext? context}) => showDialog<R>(
+        context: context ?? this.context!,
+        builder: builder ?? (context) => child ?? const SizedBox.shrink(),
+        barrierColor: barrierColor,
+        barrierDismissible: barrierDismissible,
+        barrierLabel: barrierLabel,
+        traversalEdgeBehavior: traversalEdgeBehavior,
+        anchorPoint: anchorPoint,
+        routeSettings: routeSettings,
+        useRootNavigator: useRootNavigator,
+        useSafeArea: useSafeArea,
+      );
 
   NavigatorState navigator(BuildContext? context) =>
       Navigator.of(context ?? this.context!);

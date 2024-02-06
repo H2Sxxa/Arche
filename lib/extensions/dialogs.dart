@@ -42,7 +42,7 @@ extension Dialogs on ComplexDialog {
     ).prompt(context: context);
   }
 
-  Future<void> license({
+  void license({
     BuildContext? context,
     String? applicationName,
     String? applicationVersion,
