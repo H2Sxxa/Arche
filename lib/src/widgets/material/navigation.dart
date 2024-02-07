@@ -147,6 +147,8 @@ class NavigationView extends StatefulWidget {
   final NavigationLabelType? labelType;
   final NavBuilder? builder;
 
+  final ValueChanged<int>? onPageChanged;
+
   final bool showBar;
 
   /// usePageView == true
@@ -181,6 +183,7 @@ class NavigationView extends StatefulWidget {
     this.usePageView = false,
     this.builder,
     this.showBar = true,
+    this.onPageChanged,
   });
 
   const NavigationView.switcher({
@@ -203,6 +206,7 @@ class NavigationView extends StatefulWidget {
     this.transitionBuilder,
     this.layoutBuilder,
     this.showBar = true,
+    this.onPageChanged,
   })  : usePageView = false,
         pageViewCurve = null;
 
@@ -223,6 +227,7 @@ class NavigationView extends StatefulWidget {
     this.pageViewCurve,
     this.builder,
     this.showBar = true,
+    this.onPageChanged,
   })  : usePageView = true,
         switchInCurve = null,
         switchOutCurve = null,
@@ -253,6 +258,15 @@ class NavigationViewState extends State<NavigationView>
 
   void replaceName(String name) =>
       getIndex(name).ifSome((value) => replaceIndex(value));
+
+  @override
+  set currentIndex(int other) {
+    super.currentIndex = other;
+    var onPageChanged = widget.onPageChanged;
+    if (onPageChanged != null) {
+      onPageChanged(other);
+    }
+  }
 
   @override
   void initState() {
