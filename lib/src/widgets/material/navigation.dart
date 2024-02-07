@@ -61,6 +61,17 @@ class NavigationItem {
     this.enabled = true,
   });
 
+  const NavigationItem.expand({
+    required this.icon,
+    required this.page,
+    this.selectedIcon,
+    this.name,
+    this.label = "",
+    this.vertical,
+    this.horizontal,
+    this.enabled = true,
+  }) : padding = EdgeInsets.zero;
+
   NavigationRailDestination buildHorizontal() {
     return NavigationRailDestination(
       icon: icon,
