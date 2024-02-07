@@ -147,6 +147,8 @@ class NavigationView extends StatefulWidget {
   final NavigationLabelType? labelType;
   final NavBuilder? builder;
 
+  final bool showBar;
+
   /// usePageView == true
   final bool usePageView;
   final Curve? pageViewCurve;
@@ -178,6 +180,7 @@ class NavigationView extends StatefulWidget {
     this.layoutBuilder,
     this.usePageView = false,
     this.builder,
+    this.showBar = true,
   });
 
   const NavigationView.switcher({
@@ -199,6 +202,7 @@ class NavigationView extends StatefulWidget {
     this.switchOutCurve,
     this.transitionBuilder,
     this.layoutBuilder,
+    this.showBar = true,
   })  : usePageView = false,
         pageViewCurve = null;
 
@@ -218,6 +222,7 @@ class NavigationView extends StatefulWidget {
     this.labelType,
     this.pageViewCurve,
     this.builder,
+    this.showBar = true,
   })  : usePageView = true,
         switchInCurve = null,
         switchOutCurve = null,
@@ -365,8 +370,14 @@ class StateNavigationView extends State<NavigationView>
     var view = state.widget;
     var isHorizontal = view.direction == Axis.horizontal;
     var children = isHorizontal
-        ? [horizontal(), state.content]
-        : [state.content, vertical()];
+        ? [
+            Visibility(visible: state.widget.showBar, child: horizontal()),
+            state.content
+          ]
+        : [
+            state.content,
+            Visibility(visible: state.widget.showBar, child: vertical()),
+          ];
     if (view.reversed) {
       children = children.reversed.toList();
     }
@@ -402,10 +413,11 @@ class StateNavigationView extends State<NavigationView>
   Widget get content => Expanded(
         child: Padding(
           padding:
-              widget.items[currentIndex].padding ?? const EdgeInsets.all(12),
+              widget.items[currentIndex].padding ?? const EdgeInsets.all(8),
           child: widget.usePageView
               ? PageView(
                   controller: pageController,
+                  onPageChanged: (value) => super.pushIndex(value),
                   children: widget.items.map((e) => e.page).toList(),
                 )
               : AnimatedSwitcher(

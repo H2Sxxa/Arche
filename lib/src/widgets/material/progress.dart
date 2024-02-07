@@ -62,6 +62,16 @@ class ProgressIndicatorWidgetData {
 
 class StateProgressIndicatorWidget extends State<ProgressIndicatorWidget> {
   late ProgressIndicatorWidgetData data;
+
+  @override
+  void setState(VoidCallback fn) {
+    if (!mounted) {
+      return fn();
+    }
+
+    super.setState(fn);
+  }
+
   @override
   void initState() {
     super.initState();
