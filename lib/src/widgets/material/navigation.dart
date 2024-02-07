@@ -6,7 +6,7 @@ typedef NavBuilder = Widget Function(
   BuildContext context,
   Widget Function() vertical,
   Widget Function() horizontal,
-  StateNavigationView state,
+  NavigationViewState state,
 );
 
 class HorizontalItemConfig {
@@ -230,10 +230,10 @@ class NavigationView extends StatefulWidget {
         transitionBuilder = null;
 
   @override
-  State<StatefulWidget> createState() => StateNavigationView();
+  State<StatefulWidget> createState() => NavigationViewState();
 }
 
-class StateNavigationView extends State<NavigationView>
+class NavigationViewState extends State<NavigationView>
     with TickerProviderStateMixin, IndexedNavigatorStateMixin {
   late bool extended;
   late AnimationController animationIconCtrl;
@@ -365,7 +365,7 @@ class StateNavigationView extends State<NavigationView>
     BuildContext context,
     Widget Function() vertical,
     Widget Function() horizontal,
-    StateNavigationView state,
+    NavigationViewState state,
   ) {
     var view = state.widget;
     var isHorizontal = view.direction == Axis.horizontal;

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 typedef ValueStateBuilderFunction<V, R> = R Function(
-    BuildContext context, StateValueStateBuilder<V> state);
+    BuildContext context, ValueStateBuilderState<V> state);
 
 class ValueStateBuilder<V> extends StatefulWidget {
   final ValueStateBuilderFunction<V, Widget> builder;
@@ -16,10 +16,10 @@ class ValueStateBuilder<V> extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => StateValueStateBuilder<V>();
+  State<StatefulWidget> createState() => ValueStateBuilderState<V>();
 }
 
-class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
+class ValueStateBuilderState<V> extends State<ValueStateBuilder<V>> {
   late V value;
 
   @override

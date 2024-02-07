@@ -25,7 +25,7 @@ class ProgressIndicatorWidget extends StatefulWidget {
     ValueChanged<double?> updateProgress,
   )? onInit;
 
-  final Widget Function(StateProgressIndicatorWidget state)? builder;
+  final Widget Function(ProgressIndicatorWidgetState state)? builder;
 
   const ProgressIndicatorWidget({
     super.key,
@@ -37,7 +37,7 @@ class ProgressIndicatorWidget extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => StateProgressIndicatorWidget();
+  State<StatefulWidget> createState() => ProgressIndicatorWidgetState();
 }
 
 @immutable
@@ -60,7 +60,7 @@ class ProgressIndicatorWidgetData {
   }
 }
 
-class StateProgressIndicatorWidget extends State<ProgressIndicatorWidget> {
+class ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget> {
   late ProgressIndicatorWidgetData data;
 
   @override

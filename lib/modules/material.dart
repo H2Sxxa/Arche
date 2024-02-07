@@ -6,7 +6,7 @@ export 'package:arche/src/widgets/material/navigation.dart'
         NavigationVerticalConfig,
         NavigationLabelType,
         NavBuilder,
-        StateNavigationView,
+        NavigationViewState,
         HorizontalItemConfig,
         VerticalItemConfig,
         IndexedNavigatorStateMixin;
@@ -18,6 +18,6 @@ export 'package:arche/src/widgets/material/progress.dart'
         ProgressIndicatorWidget,
         ProgressIndicatorWidgetData,
         ProgressIndicatorController,
-        StateProgressIndicatorWidget;
+        ProgressIndicatorWidgetState;
 
 export 'package:arche/src/widgets/material/dialog.dart' show ComplexDialog;

@@ -1,6 +1,6 @@
 export 'package:arche/src/widgets/wrapper.dart'
     show
         ValueStateBuilder,
-        StateValueStateBuilder,
+        ValueStateBuilderState,
         ValueStateBuilderFunction,
         FutureResolver;
