@@ -12,8 +12,8 @@ extension PredicateImpl<T> on Predicate<T> {
 R? when<R>(bool condition, FunctionCallback<R> function) =>
     condition ? function() : null;
 
-R? whenNotNull<I, R>(I input, FunctionCallback<R> function) =>
-    when(input != null, function);
+R? whenNotNull<I, R>(I? input, FunctionFactory<I, R> function) =>
+    when(input != null, () => function(input as I));
 
-R? whenNull<I, R>(I input, FunctionCallback<R> function) =>
-    when(input == null, function);
+R? whenNull<I, R>(I? input, FunctionFactory<I, R> function) =>
+    when(input == null, () => function(input as I));
