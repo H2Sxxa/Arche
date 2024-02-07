@@ -15,7 +15,7 @@ class Log {
   }
 }
 
-class ArcheLogger extends Subordinate<ArcheLogger> {
+class ArcheLogger extends Subordinate<ArcheLogger> with ChangeNotifier {
   @override
   TypeProvider get provider => ArcheBus();
 
@@ -46,6 +46,7 @@ class ArcheLogger extends Subordinate<ArcheLogger> {
       debugWrite(formatter != null ? formatter!(log) : log.toString());
     }
     _logs.add(log);
+    notifyListeners();
   }
 
   void info(message) => log(Loglevel.info, message);

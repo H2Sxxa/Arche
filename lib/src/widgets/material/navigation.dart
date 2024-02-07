@@ -61,17 +61,6 @@ class NavigationItem {
     this.enabled = true,
   });
 
-  const NavigationItem.expand({
-    required this.icon,
-    required this.page,
-    this.selectedIcon,
-    this.name,
-    this.label = "",
-    this.vertical,
-    this.horizontal,
-    this.enabled = true,
-  }) : padding = EdgeInsets.zero;
-
   NavigationRailDestination buildHorizontal() {
     return NavigationRailDestination(
       icon: icon,
@@ -421,10 +410,10 @@ class StateNavigationView extends State<NavigationView>
     return index;
   }
 
-  Widget get content => Expanded(
-        child: Padding(
-          padding:
-              widget.items[currentIndex].padding ?? const EdgeInsets.all(8),
+  Widget get content => Padding(
+        padding: widget.items[currentIndex].padding ??
+            const EdgeInsets.only(left: 8, right: 8),
+        child: Expanded(
           child: widget.usePageView
               ? PageView(
                   controller: pageController,
