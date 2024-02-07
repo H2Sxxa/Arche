@@ -43,3 +43,51 @@ class StateValueStateBuilder<V> extends State<ValueStateBuilder<V>> {
     return widget.builder(context, this);
   }
 }
+
+@immutable
+class FutureResolver<T> extends StatelessWidget {
+  final Future<T>? future;
+  final Widget Function(StackTrace? stackTrace)? error;
+  final Widget Function(T? value)? data;
+  final Widget? loading;
+  const FutureResolver({
+    super.key,
+    this.future,
+    this.data,
+    this.error,
+    this.loading,
+  });
+
+  FutureResolver<T> copy({
+    Key? key,
+    Future<T>? future,
+    Widget Function(T? value)? data,
+    Widget Function(StackTrace? stackTrace)? error,
+    Widget? loading,
+  }) =>
+      FutureResolver(
+        key: key ?? this.key,
+        future: future ?? this.future,
+        data: data ?? this.data,
+        error: error ?? this.error,
+        loading: loading ?? this.loading,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return error!(snapshot.stackTrace);
+        }
+
+        if (snapshot.hasData) {
+          return data!(snapshot.data);
+        }
+
+        return loading ?? const SizedBox.shrink();
+      },
+    );
+  }
+}
