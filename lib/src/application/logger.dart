@@ -16,33 +16,21 @@ class Log {
 }
 
 class ArcheLogger extends Subordinate<ArcheLogger> with ChangeNotifier {
-  @override
-  TypeProvider get provider => ArcheBus();
-
-  late Translator<Loglevel, Color> colorTranslator;
   final List<Log> _logs = [];
-
-  String Function(Log log)? formatter;
   bool visible = true;
 
-  ArcheLogger() {
-    translateColor();
-  }
+  Translator<Loglevel, Color> colorTranslator =
+      Translator<Loglevel, Color>(Loglevel.values)
+          .translate(Loglevel.info, Colors.green)
+          .translate(Loglevel.warn, Colors.yellow)
+          .translate(Loglevel.error, Colors.red)
+          .translate(Loglevel.debug, Colors.cyan)
+          .defaultValue(Colors.green);
 
-  Translator<Loglevel, Color> translateColor({
-    Color info = Colors.green,
-    Color warn = Colors.yellow,
-    Color error = Colors.red,
-    Color debug = Colors.blue,
-  }) {
-    colorTranslator = Translator<Loglevel, Color>(Loglevel.values)
-        .translate(Loglevel.info, info)
-        .translate(Loglevel.warn, warn)
-        .translate(Loglevel.error, error)
-        .translate(Loglevel.debug, debug)
-        .defaultValue(info);
-    return colorTranslator;
-  }
+  String Function(Log log)? formatter;
+
+  @override
+  TypeProvider get provider => ArcheBus();
 
   void log(Loglevel level, message) {
     var log = Log(DateTime.now(), message.toString(), level);
