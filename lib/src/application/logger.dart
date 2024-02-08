@@ -1,5 +1,5 @@
 import 'package:arche/arche.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 enum Loglevel { info, warn, error, debug }
 
@@ -25,25 +25,29 @@ class ArcheLogger extends Subordinate<ArcheLogger> with ChangeNotifier {
   String Function(Log log)? formatter;
   bool visible = true;
 
+  ArcheLogger() {
+    translateColor();
+  }
+
   Translator<Loglevel, Color> translateColor({
-    required Color info,
-    required Color warn,
-    required Color error,
-    required Color debug,
+    Color info = Colors.green,
+    Color warn = Colors.yellow,
+    Color error = Colors.red,
+    Color debug = Colors.blue,
   }) {
-    colorTranslator = Translator(Loglevel.values)
+    colorTranslator = Translator<Loglevel, Color>(Loglevel.values)
         .translate(Loglevel.info, info)
         .translate(Loglevel.warn, warn)
         .translate(Loglevel.error, error)
         .translate(Loglevel.debug, debug)
-        .defaultValue(info) as Translator<Loglevel, Color>;
+        .defaultValue(info);
     return colorTranslator;
   }
 
   void log(Loglevel level, message) {
     var log = Log(DateTime.now(), message.toString(), level);
     if (visible) {
-      debugWrite(formatter != null ? formatter!(log) : log.toString());
+      debugWriteln(formatter != null ? formatter!(log) : log.toString());
     }
     _logs.add(log);
     notifyListeners();
