@@ -426,7 +426,8 @@ class NavigationViewState extends State<NavigationView>
 
   Widget get content => Expanded(
         child: Padding(
-          padding: widget.items[currentIndex].padding ?? EdgeInsets.zero,
+          padding: widget.items[currentIndex].padding ?? EdgeInsets.zero
+          ,
           child: widget.usePageView
               ? PageView(
                   controller: pageController,

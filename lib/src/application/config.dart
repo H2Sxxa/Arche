@@ -27,6 +27,28 @@ class ConfigEntry<V> with BaseIO<V> {
   }
 }
 
+class ConfigEntryConverter<T, R> with BaseIO<R> {
+  final ConfigEntry<T> entry;
+  final R Function(T value) forward;
+  final T Function(R value) reverse;
+  const ConfigEntryConverter(
+    this.entry, {
+    required this.forward,
+    required this.reverse,
+  });
+  @override
+  void delete() => entry.delete();
+
+  @override
+  R get() => forward(entry.get());
+
+  @override
+  bool has() => entry.has();
+
+  @override
+  void write(R value) => entry.write(reverse(value));
+}
+
 class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
   @override
   TypeProvider get provider => ArcheBus();
