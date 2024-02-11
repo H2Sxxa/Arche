@@ -27,10 +27,11 @@ extension Dialogs on ComplexDialog {
     BuildContext? context,
     Widget? title,
     bool obscureText = false,
+    TextInputType? keyboardType,
     InputDecoration decoration = const InputDecoration(),
   }) async {
     var ctrl = TextEditingController();
-    var nav = navigator(context);
+    var nav = navigator(context);G
     return await withChild(
       AlertDialog(
         title: title,
@@ -40,6 +41,7 @@ extension Dialogs on ComplexDialog {
             obscureText: obscureText,
             decoration: decoration,
             controller: ctrl,
+            keyboardType: keyboardType,
             onSubmitted: (value) => nav.pop(value),
           ),
         ),
