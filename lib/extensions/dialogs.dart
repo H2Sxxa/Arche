@@ -4,9 +4,28 @@ import 'package:arche/arche.dart';
 import 'package:flutter/material.dart';
 
 extension Dialogs on ComplexDialog {
+  void text({
+    BuildContext? context,
+    Widget? content,
+  }) async {
+    await withChild(AlertDialog(
+      content: Padding(
+        padding: const EdgeInsets.all(8),
+        child: content,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => navigator(context).pop(),
+          child: Text(
+              MaterialLocalizations.of(context ?? this.context!).okButtonLabel),
+        )
+      ],
+    )).prompt();
+  }
+
   Future<String?> input({
     BuildContext? context,
-    Widget? title = const Text("Input"),
+    Widget? title,
     bool obscureText = false,
     InputDecoration decoration = const InputDecoration(),
   }) async {
@@ -59,11 +78,12 @@ extension Dialogs on ComplexDialog {
     )).prompt(context: context);
   }
 
-  Future<bool> confirm(
-      {required BuildContext context,
-      Widget? content,
-      Widget? title = const Text("Confirm?"),
-      bool defaultValue = false}) async {
+  Future<bool> confirm({
+    required BuildContext context,
+    Widget? content,
+    Widget? title,
+    bool defaultValue = false,
+  }) async {
     var locale = MaterialLocalizations.of(context);
     var nav = navigator(context);
     return await withChild(AlertDialog(

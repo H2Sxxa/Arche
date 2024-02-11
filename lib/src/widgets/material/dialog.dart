@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 @immutable
 class ComplexDialog {
+  static const ComplexDialog instance = ComplexDialog();
+
   final bool barrierDismissible;
   final Color? barrierColor;
   final String? barrierLabel;
