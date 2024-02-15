@@ -276,7 +276,7 @@ class NavigationViewState extends State<NavigationView>
     animationIconCtrl = AnimationController(vsync: this)
       ..duration = widget.animationDuration ?? Durations.medium4;
 
-    pageController = PageController();
+    pageController = PageController(initialPage: currentIndex);
   }
 
   @override
@@ -408,6 +408,8 @@ class NavigationViewState extends State<NavigationView>
         duration: widget.animationDuration ?? Durations.medium4,
         curve: widget.pageViewCurve ?? Curves.fastLinearToSlowEaseIn,
       );
+    } else {
+      pageController = PageController(initialPage: currentIndex);
     }
   }
 
@@ -420,6 +422,8 @@ class NavigationViewState extends State<NavigationView>
         duration: widget.animationDuration ?? Durations.medium4,
         curve: widget.pageViewCurve ?? Curves.linear,
       );
+    } else {
+      pageController = PageController(initialPage: currentIndex);
     }
     return index;
   }
@@ -429,6 +433,7 @@ class NavigationViewState extends State<NavigationView>
           padding: widget.items[currentIndex].padding ?? EdgeInsets.zero,
           child: widget.usePageView
               ? PageView(
+                  physics: const BouncingScrollPhysics(),
                   controller: pageController,
                   onPageChanged: (value) => super.pushIndex(value),
                   children: widget.items.map((e) => e.page).toList(),
