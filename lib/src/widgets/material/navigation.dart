@@ -408,8 +408,6 @@ class NavigationViewState extends State<NavigationView>
         duration: widget.animationDuration ?? Durations.medium4,
         curve: widget.pageViewCurve ?? Curves.fastLinearToSlowEaseIn,
       );
-    } else {
-      pageController = PageController(initialPage: currentIndex);
     }
   }
 
@@ -422,8 +420,6 @@ class NavigationViewState extends State<NavigationView>
         duration: widget.animationDuration ?? Durations.medium4,
         curve: widget.pageViewCurve ?? Curves.linear,
       );
-    } else {
-      pageController = PageController(initialPage: currentIndex);
     }
     return index;
   }
