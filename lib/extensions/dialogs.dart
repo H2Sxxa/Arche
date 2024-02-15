@@ -31,7 +31,7 @@ extension Dialogs on ComplexDialog {
     InputDecoration decoration = const InputDecoration(),
   }) async {
     var ctrl = TextEditingController();
-    var nav = navigator(context);G
+    var nav = navigator(context);
     return await withChild(
       AlertDialog(
         title: title,

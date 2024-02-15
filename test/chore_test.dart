@@ -35,4 +35,8 @@ void main() {
     debugWriteln(can.value);
     debugWriteln(can.reload());
   });
+
+  test("Test Map", () {
+    debugWriteln({}[1] = 100);
+  });
 }

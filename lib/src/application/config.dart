@@ -21,9 +21,20 @@ class ConfigEntry<V> with BaseIO<V> {
   @override
   void write(V value) => config.write(key, value);
 
-  static ConfigEntry<T> Function<T>(String key) withConfig(ArcheConfig config) {
-    currying<T>(String key) => ConfigEntry<T>(config, key);
-    return currying;
+  static ConfigEntry<T> Function<T>(String key) withConfig(
+    ArcheConfig config, {
+    bool generateMap = false,
+  }) {
+    if (generateMap) {
+      Map<String, ConfigEntry> map = {};
+      currying<T>(String key) => map.containsKey(key)
+          ? map[key] as ConfigEntry<T>
+          : map[key] = ConfigEntry<T>(config, key);
+      return currying;
+    } else {
+      currying<T>(String key) => ConfigEntry<T>(config, key);
+      return currying;
+    }
   }
 }
 

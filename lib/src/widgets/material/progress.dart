@@ -17,6 +17,9 @@ class ProgressIndicatorController extends ChangeNotifier {
 class ProgressIndicatorWidget extends StatefulWidget {
   final ProgressIndicatorWidgetData data;
   final ProgressIndicatorController? controller;
+
+  /// The Padding of the Text
+  final EdgeInsetsGeometry padding;
   final bool useLinear;
   final FutureOr Function(
     BuildContext context,
@@ -33,6 +36,7 @@ class ProgressIndicatorWidget extends StatefulWidget {
     this.controller,
     this.onInit,
     this.useLinear = false,
+    this.padding = const EdgeInsets.all(12),
     this.builder,
   });
 
@@ -117,7 +121,10 @@ class ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget> {
                     ),
               Visibility(
                 visible: data.text != null,
-                child: Text(data.text.toString()),
+                child: Padding(
+                  padding: widget.padding,
+                  child: Text(data.text.toString()),
+                ),
               ),
             ],
           );
