@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:arche/arche.dart';
+import 'package:arche/extensions/io.dart';
 import 'package:arche/extensions/iter.dart';
 import 'package:test/test.dart';
 
@@ -38,5 +41,6 @@ void main() {
 
   test("Test Map", () {
     debugWriteln({}[1] = 100);
+    debugWriteln(Directory("test").subPath("subpath"));
   });
 }

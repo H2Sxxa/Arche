@@ -20,13 +20,14 @@ extension Dialogs on ComplexDialog {
               MaterialLocalizations.of(context ?? this.context!).okButtonLabel),
         )
       ],
-    )).prompt();
+    )).prompt(context: context);
   }
 
   Future<String?> input({
     BuildContext? context,
     Widget? title,
     bool obscureText = false,
+    bool autofocus = false,
     TextInputType? keyboardType,
     InputDecoration decoration = const InputDecoration(),
   }) async {
@@ -40,6 +41,7 @@ extension Dialogs on ComplexDialog {
           child: TextField(
             obscureText: obscureText,
             decoration: decoration,
+            autofocus: autofocus,
             controller: ctrl,
             keyboardType: keyboardType,
             onSubmitted: (value) => nav.pop(value),
