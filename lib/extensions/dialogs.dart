@@ -7,8 +7,10 @@ extension Dialogs on ComplexDialog {
   void text({
     BuildContext? context,
     Widget? content,
+    Widget? title,
   }) async {
     await withChild(AlertDialog(
+      title: title,
       content: Padding(
         padding: const EdgeInsets.all(8),
         child: content,
