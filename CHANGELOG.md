@@ -1,6 +1,12 @@
 ## 0.0.5
 
  - Add `ConfigEntry` and Improve the `ArcheLogger`
+ - Add `ConfigEntry` Generator
+ - Add `ProgressIndicatorWidget` and `ComplexDialog`
+ - Add `FutureResolver`
+ - Remove default `Padding` in `NavigationView`
+ - Rename the `State` to follow the offical API
+ - Fix Bugs and Optimize Code
 
 ## 0.0.4
 
