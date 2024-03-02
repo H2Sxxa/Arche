@@ -47,7 +47,7 @@ class ValueStateBuilderState<V> extends State<ValueStateBuilder<V>> {
 @immutable
 class FutureResolver<T> extends StatelessWidget {
   final Future<T>? future;
-  final Widget Function(StackTrace? stackTrace)? error;
+  final Widget Function(Object? error, StackTrace? stackTrace)? error;
   final Widget Function(T? value)? data;
   final Widget? loading;
   const FutureResolver({
@@ -62,7 +62,7 @@ class FutureResolver<T> extends StatelessWidget {
     Key? key,
     Future<T>? future,
     Widget Function(T? value)? data,
-    Widget Function(StackTrace? stackTrace)? error,
+    Widget Function(Object? error, StackTrace? stackTrace)? error,
     Widget? loading,
   }) =>
       FutureResolver(
@@ -83,7 +83,8 @@ class FutureResolver<T> extends StatelessWidget {
         }
 
         if (snapshot.hasError) {
-          return error!(snapshot.stackTrace);
+          return (error ?? (error, stacktrace) => Text("$error\n$stacktrace"))(
+              snapshot.error, snapshot.stackTrace);
         }
 
         return loading ?? const SizedBox.shrink();
