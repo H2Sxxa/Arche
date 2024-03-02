@@ -78,12 +78,12 @@ class FutureResolver<T> extends StatelessWidget {
     return FutureBuilder(
       future: future,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return error!(snapshot.stackTrace);
-        }
-
         if (snapshot.hasData) {
           return data!(snapshot.data);
+        }
+
+        if (snapshot.hasError) {
+          return error!(snapshot.stackTrace);
         }
 
         return loading ?? const SizedBox.shrink();
