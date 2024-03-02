@@ -4,12 +4,12 @@ import 'package:arche/arche.dart';
 import 'package:flutter/material.dart';
 
 extension Dialogs on ComplexDialog {
-  void text({
+  Future<void> text({
     BuildContext? context,
     Widget? content,
     Widget? title,
   }) async {
-    await withChild(AlertDialog(
+    return await withChild(AlertDialog(
       title: title,
       content: Padding(
         padding: const EdgeInsets.all(8),
