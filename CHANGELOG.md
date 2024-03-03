@@ -1,3 +1,7 @@
+## 0.0.6
+
+ - Fix `ConfigEntry` hashKey
+
 ## 0.0.5
 
  - Add `ConfigEntry` and Improve the `ArcheLogger`
