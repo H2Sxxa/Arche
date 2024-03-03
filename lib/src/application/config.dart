@@ -28,10 +28,10 @@ class ConfigEntry<V> with BaseIO<V> {
     if (generateMap) {
       Map<String, ConfigEntry> map = {};
       currying<T>(String key) {
-        key = "$key${T.hashCode}";
-        return map.containsKey(key)
-            ? map[key] as ConfigEntry<T>
-            : map[key] = ConfigEntry<T>(config, key);
+        var hashkey = "$key${T.hashCode}";
+        return map.containsKey(hashkey)
+            ? map[hashkey] as ConfigEntry<T>
+            : map[hashkey] = ConfigEntry<T>(config, key);
       }
 
       return currying;
