@@ -25,6 +25,35 @@ extension Dialogs on ComplexDialog {
     )).prompt(context: context);
   }
 
+  Future<bool> confirm({
+    BuildContext? context,
+    Widget? content,
+    Widget? title,
+    bool cancel = false,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(8),
+  }) async {
+    var locale = MaterialLocalizations.of(context ?? this.context!);
+    var nav = navigator(context);
+    return await withChild(AlertDialog(
+          title: title,
+          content: Padding(
+            padding: padding,
+            child: content,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => nav.pop(true),
+              child: Text(locale.okButtonLabel),
+            ),
+            TextButton(
+              onPressed: () => nav.pop(false),
+              child: Text(locale.cancelButtonLabel),
+            )
+          ],
+        )).prompt<bool>(context: context) ??
+        cancel;
+  }
+
   Future<String?> input({
     BuildContext? context,
     Widget? title,
@@ -82,31 +111,5 @@ extension Dialogs on ComplexDialog {
       applicationVersion: applicationVersion,
       children: children,
     )).prompt(context: context);
-  }
-
-  Future<bool> confirm({
-    required BuildContext context,
-    Widget? content,
-    Widget? title,
-    bool defaultValue = false,
-  }) async {
-    var locale = MaterialLocalizations.of(context);
-    var nav = navigator(context);
-    return await withChild(AlertDialog(
-          title: title,
-          content: Padding(
-            padding: const EdgeInsets.all(8),
-            child: content,
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => nav.pop(true),
-                child: Text(locale.okButtonLabel)),
-            TextButton(
-                onPressed: () => nav.pop(false),
-                child: Text(locale.cancelButtonLabel))
-          ],
-        )).prompt<bool>(context: context) ??
-        defaultValue;
   }
 }
