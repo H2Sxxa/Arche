@@ -253,7 +253,7 @@ class NavigationViewState extends State<NavigationView>
         return Optional(value: element.key);
       }
     }
-    return Optional.empty();
+    return const Optional.none();
   }
 
   void replaceName(String name) =>
