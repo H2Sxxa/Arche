@@ -11,10 +11,9 @@
   </div>
 </div>
 
-## Features
+## What's Arche?
 
- - Application build/debug utils
- - Language extension to code effectively
+Arche is a Flutter lib, provides language extensions, singleton data manager, simple debug tools, some widgets and etc.
 
 ## Getting started
 
