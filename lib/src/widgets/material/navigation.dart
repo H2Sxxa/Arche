@@ -119,7 +119,7 @@ class NavigationHorizontalConfig {
 
 class NavigationVerticalConfig {
   final Color? shadowColor, surfaceTintColor;
-  final MaterialStateProperty<Color?>? overlayColor;
+  final WidgetStateProperty<Color?>? overlayColor;
   final double? height;
   final Duration? animationDuration;
   const NavigationVerticalConfig({
