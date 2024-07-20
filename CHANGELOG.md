@@ -1,3 +1,13 @@
+## 1.0.1
+
+ - Fix NavigationView AnimeIconButton Error
+
+## 1.0.0
+
+ - Fix Deprecated API
+ - Optimize `Optional`
+ - Rewrite confirm dialog
+
 ## 0.0.6 (HotFix)
 
  - Fix `ConfigEntry` hashKey
