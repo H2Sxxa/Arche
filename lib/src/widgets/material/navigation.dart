@@ -335,9 +335,12 @@ class NavigationViewState extends State<NavigationView>
         IconButton(
           onPressed: () => setState(() {
             extended = !extended;
-            extended
-                ? animationIconCtrl.forward()
-                : animationIconCtrl.reverse();
+            animationIconCtrl.stop();
+            if (extended) {
+              animationIconCtrl.forward();
+            } else {
+              animationIconCtrl.reverse();
+            }
           }),
           icon: Transform.rotate(
             angle: widget.reversed ? math.pi : 0,
