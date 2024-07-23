@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:arche/arche.dart';
-import 'package:arche/src/abc/kvrw.dart';
 import 'package:flutter/services.dart';
 
-typedef ConfigGenerator = ConfigEntry<dynamic> Function(String key);
+typedef ConfigEntryGenerator = ConfigEntry<T> Function<T>(String key);
 
 abstract class ConfigBase {}
 
@@ -26,7 +25,7 @@ class ConfigEntry<V> with BaseIO<V>, AsyncBaseIO<V> {
   @override
   void write(V value) => config.write(key, value);
 
-  static ConfigGenerator withConfig(
+  static ConfigEntryGenerator withConfig(
     ArcheConfig config, {
     bool generateMap = false,
   }) {
