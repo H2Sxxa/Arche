@@ -1,3 +1,7 @@
+## 1.1.1
+
+ - Fix module export  
+
 ## 1.1.0
 
  - AsyncIO Support
@@ -14,7 +18,7 @@
  - Optimize `Optional`
  - Rewrite confirm dialog
 
-## 0.0.6 (HotFix)
+## 0.0.6
 
  - Fix `ConfigEntry` hashKey
 
