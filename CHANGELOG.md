@@ -1,3 +1,9 @@
+## 1.1.0
+
+ - AsyncIO Support
+ - Extension Dialogs Improvement
+ - Remove some unnecessary API
+
 ## 1.0.1
 
  - Fix NavigationView AnimeIconButton Error

@@ -7,10 +7,12 @@ extension Dialogs on ComplexDialog {
   Future<void> text({
     BuildContext? context,
     Widget? content,
+    Widget? icon,
     Widget? title,
   }) async {
     return await withChild(AlertDialog(
       title: title,
+      icon: icon,
       content: Padding(
         padding: const EdgeInsets.all(8),
         child: content,
@@ -29,6 +31,7 @@ extension Dialogs on ComplexDialog {
     BuildContext? context,
     Widget? content,
     Widget? title,
+    Widget? icon,
     bool cancel = false,
     EdgeInsetsGeometry padding = const EdgeInsets.all(8),
   }) async {
@@ -36,6 +39,7 @@ extension Dialogs on ComplexDialog {
     var nav = navigator(context);
     return await withChild(AlertDialog(
           title: title,
+          icon: icon,
           content: Padding(
             padding: padding,
             child: content,
@@ -57,15 +61,18 @@ extension Dialogs on ComplexDialog {
   Future<String?> input({
     BuildContext? context,
     Widget? title,
+    Widget? icon,
     bool obscureText = false,
     bool autofocus = false,
     TextInputType? keyboardType,
     InputDecoration decoration = const InputDecoration(),
+    TextEditingController? controller,
   }) async {
-    var ctrl = TextEditingController();
+    var ctrl = controller ?? TextEditingController();
     var nav = navigator(context);
     return await withChild(
       AlertDialog(
+        icon: icon,
         title: title,
         content: Padding(
           padding: const EdgeInsets.all(8),

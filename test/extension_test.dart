@@ -13,7 +13,7 @@ void main() {
   });
 
   test("Test ListGenerator", () {
-    debugWrite(ListExt.generatefrom(
+    debugWrite(ListExt.generateFrom(
       [1, 2, 3],
       functionFactory: (p0) => ++p0,
     ));

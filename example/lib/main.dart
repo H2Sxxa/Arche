@@ -25,29 +25,31 @@ class MyApp extends StatelessWidget {
         body: NavigationView.pageView(
           items: [
             NavigationItem(
-                icon: const Icon(Icons.home),
-                label: "Home",
-                page: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                            100,
-                            (index) => Builder(
-                                  builder: (context) => CardButton(
-                                      size: const Size.square(120),
-                                      child: const Text("hello"),
-                                      onTap: () => const ComplexDialog()
-                                          .withContext(context: context)
-                                        ..input(
-                                          context: context,
-                                          decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ).then(debugWriteln)
-                                        ..confirm(context: context)
-                                            .then(debugWriteln)
-                                        ..license()),
-                                ))))),
+              icon: const Icon(Icons.home),
+              label: "Home",
+              page: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    100,
+                    (index) => Builder(
+                      builder: (context) => FilledButton(
+                          child: const Text("hello"),
+                          onPressed: () => const ComplexDialog()
+                              .withContext(context: context)
+                            ..input(
+                              context: context,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                            ).then(debugWriteln)
+                            ..confirm(context: context).then(debugWriteln)
+                            ..license()),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             NavigationItem(
               icon: const Icon(Icons.settings),
               label: "Settings",

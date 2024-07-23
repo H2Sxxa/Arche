@@ -1,16 +1,6 @@
 import 'package:arche/extensions/functions.dart';
 
 extension ListExt<T> on List<T> {
-  List<T> addThen(T value) {
-    add(value);
-    return this;
-  }
-
-  List<T> addAllThen(Iterable<T> value) {
-    addAll(value);
-    return this;
-  }
-
   List<T> joinElement(T separator) {
     if (length >= 2) {
       var tar = length - 1;
@@ -21,12 +11,7 @@ extension ListExt<T> on List<T> {
     return this;
   }
 
-  List<T> insertThen(int index, T value) {
-    insert(index, value);
-    return this;
-  }
-
-  static List<R> generatefrom<T, R>(Iterable<T> input,
+  static List<R> generateFrom<T, R>(Iterable<T> input,
       {FunctionFactory<T, R>? functionFactory}) {
     List<R> res = [];
     for (var e in input) {
@@ -59,7 +44,7 @@ extension IterExt<T> on Iterable<T> {
     return true;
   }
 
-  List<R> mapEnumerate<R>(FunctionIndexedFactory<T, R> functionFactory) {
+  List<R> enumerate<R>(FunctionIndexedFactory<T, R> functionFactory) {
     List<R> result = [];
     for (var (index, value) in indexed) {
       result.add(functionFactory(index, value));

@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:arche/arche.dart';
 import 'package:arche/src/abc/kvrw.dart';
 import 'package:flutter/services.dart';
 
-class ConfigEntry<V> with BaseIO<V> {
+typedef ConfigGenerator = ConfigEntry<dynamic> Function(String key);
+
+abstract class ConfigBase {}
+
+class ConfigEntry<V> with BaseIO<V>, AsyncBaseIO<V> {
   final ArcheConfig config;
   final String key;
   const ConfigEntry(this.config, this.key);
@@ -21,7 +26,7 @@ class ConfigEntry<V> with BaseIO<V> {
   @override
   void write(V value) => config.write(key, value);
 
-  static ConfigEntry<T> Function<T>(String key) withConfig(
+  static ConfigGenerator withConfig(
     ArcheConfig config, {
     bool generateMap = false,
   }) {
@@ -40,12 +45,26 @@ class ConfigEntry<V> with BaseIO<V> {
       return currying;
     }
   }
+
+  @override
+  FutureOr<void> deleteAsync() async => await config.deleteAsync(key);
+
+  @override
+  FutureOr<V> getAsync() async => await config.getAsync(key);
+
+  @override
+  FutureOr<bool> hasAsync() async => await config.hasAsync(key);
+
+  @override
+  FutureOr<void> writeAsync(V value) async =>
+      await config.writeAsync(key, value);
 }
 
-class ConfigEntryConverter<T, R> with BaseIO<R> {
+class ConfigEntryConverter<T, R> with BaseIO<R>, AsyncBaseIO<R> {
   final ConfigEntry<T> entry;
   final R Function(T value) forward;
   final T Function(R value) reverse;
+
   const ConfigEntryConverter(
     this.entry, {
     required this.forward,
@@ -62,15 +81,28 @@ class ConfigEntryConverter<T, R> with BaseIO<R> {
 
   @override
   void write(R value) => entry.write(reverse(value));
+
+  @override
+  FutureOr<void> deleteAsync() async => await entry.deleteAsync();
+
+  @override
+  FutureOr<R> getAsync() async => forward(await entry.getAsync());
+
+  @override
+  FutureOr<bool> hasAsync() async => await entry.hasAsync();
+  @override
+  FutureOr<void> writeAsync(R value) async =>
+      await entry.writeAsync(reverse(value));
 }
 
-class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
+class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>>
+    with KVIO<K, V>, AsyncKVIO<K, V> {
   @override
   TypeProvider get provider => ArcheBus();
 
   late MapSerializer<K, V, String> serializer = JsonSerializer();
   bool _memory = false;
-  final Map<K, V> _memorymap = {};
+  final Map<K, V> _internal = {};
   late File _file;
 
   /// Read Only
@@ -82,7 +114,7 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
       this.serializer = serializer;
     }
 
-    _memorymap.addAll(this.serializer.decode(init));
+    _internal.addAll(this.serializer.decode(init));
   }
 
   /// Read Only
@@ -95,11 +127,12 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
 
     rootBundle
         .loadString(name)
-        .then((value) => _memorymap.addAll(this.serializer.decode(value)));
+        .then((value) => _internal.addAll(this.serializer.decode(value)));
   }
 
   /// Read / Write
-  ArcheConfig.path(String path, {MapSerializer<K, V, String>? serializer}) {
+  ArcheConfig.path(String path,
+      {MapSerializer<K, V, String>? serializer, bool initSync = true}) {
     if (serializer != null) {
       this.serializer = serializer;
     }
@@ -108,10 +141,13 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
       _file.writeAsStringSync("{}");
     }
 
-    syncFrom();
+    if (initSync) {
+      syncFrom();
+    }
   }
 
-  ArcheConfig.file(this._file, {MapSerializer<K, V, String>? serializer}) {
+  ArcheConfig.file(this._file,
+      {MapSerializer<K, V, String>? serializer, bool initSync = true}) {
     if (serializer != null) {
       this.serializer = serializer;
     }
@@ -120,51 +156,82 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>> with KVIO<K, V> {
       _file.writeAsStringSync("{}");
     }
 
-    syncFrom();
+    if (initSync) {
+      syncFrom();
+    }
   }
 
   void loads(String data) {
-    _memorymap.addAll(this.serializer.decode(data));
+    _internal.addAll(this.serializer.decode(data));
   }
 
   /// Write
   void syncTo() {
     if (!_memory) {
-      _file.writeAsStringSync(serializer.encode(_memorymap));
+      _file.writeAsStringSync(serializer.encode(_internal));
+    }
+  }
+
+  FutureOr<void> syncToAsync() async {
+    if (!_memory) {
+      await _file.writeAsString(serializer.encode(_internal));
     }
   }
 
   /// Write
   void syncFrom() {
     if (!_memory) {
-      _memorymap.addAll(this.serializer.decode(_file.readAsStringSync()));
+      _internal.addAll(this.serializer.decode(_file.readAsStringSync()));
+    }
+  }
+
+  FutureOr<void> syncFromAsync() async {
+    if (!_memory) {
+      _internal.addAll(this.serializer.decode(await _file.readAsString()));
     }
   }
 
   /// Read / Write
   @override
   Map<K, V> read() {
-    return _memorymap;
+    return _internal;
   }
 
   /// Write
   @override
   void write(K key, V value) {
-    _memorymap[key] = value;
+    _internal[key] = value;
     syncTo();
   }
 
   /// Write
   @override
   void writeAll(Map<K, V> m) {
-    _memorymap.addAll(m);
+    _internal.addAll(m);
     syncTo();
   }
 
   /// Read / Write
   @override
   void delete(K key) {
-    _memorymap.remove(key);
+    _internal.remove(key);
     syncTo();
+  }
+
+  @override
+  FutureOr<void> deleteAsync(K key) async {
+    _internal.remove(key);
+    await syncToAsync();
+  }
+
+  @override
+  FutureOr<Map<K, V>> readAsync() {
+    return _internal;
+  }
+
+  @override
+  FutureOr<void> writeAsync(K key, V value) async {
+    _internal[key] = value;
+    await syncToAsync();
   }
 }
