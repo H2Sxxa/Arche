@@ -2,11 +2,19 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:arche/arche.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 typedef ConfigEntryGenerator = ConfigEntry<T> Function<T>(String key);
 
-abstract class ConfigBase {}
+@immutable
+abstract class AppConfigsBase {
+  // ignore: unused_field
+  final ConfigEntryGenerator _generator;
+
+  AppConfigsBase(ArcheConfig config, [bool generateMap = false])
+      : _generator = ConfigEntry.withConfig(config, generateMap: generateMap);
+}
 
 class ConfigEntry<V> with BaseIO<V>, AsyncBaseIO<V> {
   final ArcheConfig config;

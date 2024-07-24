@@ -1,3 +1,8 @@
+## 1.1.2
+ 
+ - Fix type error
+ - Add `AppConfigsBase`
+
 ## 1.1.1
 
  - Fix module export  
