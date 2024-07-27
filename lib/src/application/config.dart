@@ -9,11 +9,10 @@ typedef ConfigEntryGenerator = ConfigEntry<T> Function<T>(String key);
 
 @immutable
 abstract class AppConfigsBase {
-  // ignore: unused_field
-  final ConfigEntryGenerator _generator;
+  final ConfigEntryGenerator generator;
 
   AppConfigsBase(ArcheConfig config, [bool generateMap = false])
-      : _generator = ConfigEntry.withConfig(config, generateMap: generateMap);
+      : generator = ConfigEntry.withConfig(config, generateMap: generateMap);
 }
 
 class ConfigEntry<V> with BaseIO<V>, AsyncBaseIO<V> {

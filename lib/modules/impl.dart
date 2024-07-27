@@ -13,8 +13,5 @@ export 'package:arche/src/impl/cans.dart'
         LazyDynamicCan,
         FutureLazyDynamicCan;
 
-export 'package:arche/src/impl/debug.dart' show debugExecute;
-
-export 'package:arche/src/impl/debug_io.dart'
-    if (dart.library.html) 'package:arche/src/impl/debug_web.dart'
-    show debugWrite, debugWriteln;
+export 'package:arche/src/impl/debug.dart'
+    show debugExecute, debugWrite, debugWriteln, dbg;

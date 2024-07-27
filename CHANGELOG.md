@@ -1,3 +1,8 @@
+## 1.1.3
+
+ - `config` bugfix
+ - Some `cans` return type should use `FutureOr` 
+
 ## 1.1.2
  
  - Fix type error

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:arche/arche.dart';
 import 'package:flutter/material.dart';
 
 class ProgressIndicatorController extends ChangeNotifier {
@@ -64,28 +65,20 @@ class ProgressIndicatorWidgetData {
   }
 }
 
-class ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget> {
+class ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget>
+    with RefreshMountedStateMixin {
   late ProgressIndicatorWidgetData data;
-
-  @override
-  void setState(VoidCallback fn) {
-    if (!mounted) {
-      return fn();
-    }
-
-    super.setState(fn);
-  }
 
   @override
   void initState() {
     super.initState();
 
     data = widget.data;
-    updateProgress(value) => setState(() {
+    updateProgress(value) => refreshMountedFn(() {
           data = widget.data.copy(progress: value);
           widget.controller?.data = data;
         });
-    updateText(value) => setState(() {
+    updateText(value) => refreshMountedFn(() {
           data = widget.data.copy(text: value);
           widget.controller?.data = data;
         });

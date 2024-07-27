@@ -6,4 +6,10 @@ mixin RefreshMountedStateMixin<T extends StatefulWidget> on State<T> {
       setState(() {});
     }
   }
+
+  void refreshMountedFn(Function() fn) {
+    if (mounted) {
+      setState(fn);
+    }
+  }
 }

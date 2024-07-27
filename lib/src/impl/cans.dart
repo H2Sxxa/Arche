@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:arche/arche.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -41,7 +43,7 @@ class FutureLazyConstCan<T> extends ConstCan<T> {
     return value!;
   }
 
-  Future<T> getValue() async {
+  FutureOr<T> getValue() async {
     if (value != null) {
       return value!;
     }
@@ -94,7 +96,7 @@ class FutureLazyDynamicCan<T> extends DynamicCan<T> {
     return value!;
   }
 
-  Future<T> getValue() async {
+  FutureOr<T> getValue() async {
     if (value != null) {
       return value!;
     }
