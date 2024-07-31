@@ -4,13 +4,20 @@ import 'package:flutter/foundation.dart';
 @immutable
 class Optional<V> {
   final V? _value;
-
   const Optional({V? value}) : _value = value;
-  const Optional.some(V this._value);
+  const Optional.some(V value) : _value = value;
   const Optional.none() : _value = null;
 
   Optional<R> cast<R>() {
     return Optional<R>(value: _value as R?);
+  }
+
+  static Optional<V> from<V>(V? value) {
+    if (value == null) {
+      return const Optional.none();
+    }
+
+    return Optional.some(value);
   }
 
   bool isSome() {
@@ -53,7 +60,7 @@ class Optional<V> {
     return isNull() ? const Optional.none() : Optional(value: func(get()));
   }
 
-  Optional<V> transform(FunctionFactory<V, V> func) {
+  Optional<V> transform(Transformer<V> func) {
     return isNull() ? const Optional.none() : Optional(value: func(get()));
   }
 }
