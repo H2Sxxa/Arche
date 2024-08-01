@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
-                    100,
+                    4,
                     (index) => Builder(
                       builder: (context) => FilledButton(
                           child: const Text("hello"),

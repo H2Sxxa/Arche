@@ -1,6 +1,6 @@
 class Translator<T, R> {
   final Map<T, R?> _internalMap = {};
-  final List<T> keys;
+  final Iterable<T> keys;
   late R _defautValue;
 
   Iterable<MapEntry<T, R?>> get iterator => _internalMap.entries;

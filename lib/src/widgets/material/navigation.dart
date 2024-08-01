@@ -288,8 +288,7 @@ class NavigationViewState extends State<NavigationView>
 
   Widget _buildVertical() {
     var config = widget.vertical;
-    NavigationDestinationLabelBehavior labelType =
-        NavigationDestinationLabelBehavior.onlyShowSelected;
+    NavigationDestinationLabelBehavior labelType;
     switch (widget.labelType) {
       case NavigationLabelType.all:
         labelType = NavigationDestinationLabelBehavior.alwaysShow;
@@ -298,6 +297,7 @@ class NavigationViewState extends State<NavigationView>
         labelType = NavigationDestinationLabelBehavior.alwaysHide;
         break;
       default:
+        labelType = NavigationDestinationLabelBehavior.onlyShowSelected;
         break;
     }
     return NavigationBar(
@@ -320,7 +320,7 @@ class NavigationViewState extends State<NavigationView>
 
   Widget _buildHorizontal() {
     var config = widget.horizontal;
-    NavigationRailLabelType labelType = NavigationRailLabelType.none;
+    NavigationRailLabelType labelType;
     switch (widget.labelType) {
       case NavigationLabelType.all:
         labelType = NavigationRailLabelType.all;
@@ -329,8 +329,10 @@ class NavigationViewState extends State<NavigationView>
         labelType = NavigationRailLabelType.selected;
         break;
       default:
+        labelType = NavigationRailLabelType.none;
         break;
     }
+
     Widget? leading = config?.leading ??
         IconButton(
           onPressed: () => setState(() {
