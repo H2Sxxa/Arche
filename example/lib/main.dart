@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
           title: const Text("Test"),
         ),
         body: NavigationView(
-          usePageView: true,
+          transitionDetailsBuilder: (from, to, child, animation) {
+            return AnimatedSwitcher.defaultTransitionBuilder(child, animation);
+          },
           direction: Axis.vertical,
           vertical: const NavigationVerticalConfig(useStack: true),
           items: [

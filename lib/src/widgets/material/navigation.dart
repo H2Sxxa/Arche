@@ -161,8 +161,17 @@ class NavigationView extends StatefulWidget {
   /// usePageView == false
   final Curve? switchInCurve;
   final Curve? switchOutCurve;
+
+  /// Available under `usePageView == false`
   final AnimatedSwitcherTransitionBuilder? transitionBuilder;
+
+  /// Available under `usePageView == false`
   final AnimatedSwitcherLayoutBuilder? layoutBuilder;
+
+  /// Available under `usePageView == false`, will override `transitionBuilder`
+  final Widget Function(
+          int from, int to, Widget child, Animation<double> animation)?
+      transitionDetailsBuilder;
 
   const NavigationView({
     super.key,
@@ -187,6 +196,7 @@ class NavigationView extends StatefulWidget {
     this.builder,
     this.showBar = true,
     this.onPageChanged,
+    this.transitionDetailsBuilder,
   });
 
   const NavigationView.switcher({
@@ -210,6 +220,7 @@ class NavigationView extends StatefulWidget {
     this.layoutBuilder,
     this.showBar = true,
     this.onPageChanged,
+    this.transitionDetailsBuilder,
   })  : usePageView = false,
         pageViewCurve = null;
 
@@ -231,6 +242,7 @@ class NavigationView extends StatefulWidget {
     this.builder,
     this.showBar = true,
     this.onPageChanged,
+    this.transitionDetailsBuilder,
   })  : usePageView = true,
         switchInCurve = null,
         switchOutCurve = null,
@@ -442,6 +454,14 @@ class NavigationViewState extends State<NavigationView>
   }
 
   Widget get content {
+    var transition = AnimatedSwitcher.defaultTransitionBuilder;
+    if (widget.transitionDetailsBuilder != null) {
+      transition = (child, animation) => widget.transitionDetailsBuilder!(
+          recentIndexs.last, currentIndex, child, animation);
+    } else if (widget.transitionBuilder != null) {
+      transition = widget.transitionBuilder!;
+    }
+
     var child = Padding(
       padding: widget.items[currentIndex].padding ?? EdgeInsets.zero,
       child: widget.usePageView
@@ -455,11 +475,11 @@ class NavigationViewState extends State<NavigationView>
               duration: widget.animationDuration ?? Durations.medium4,
               switchInCurve: widget.switchInCurve ?? Curves.linear,
               switchOutCurve: widget.switchOutCurve ?? Curves.linear,
-              transitionBuilder: widget.transitionBuilder ??
-                  AnimatedSwitcher.defaultTransitionBuilder,
+              transitionBuilder: transition,
               layoutBuilder:
                   widget.layoutBuilder ?? AnimatedSwitcher.defaultLayoutBuilder,
-              child: widget.items[currentIndex].page),
+              child: widget.items[currentIndex].page,
+            ),
     );
     return widget.direction == Axis.vertical &&
             (widget.vertical?.useStack ?? false)
@@ -481,7 +501,7 @@ class NavigationViewState extends State<NavigationView>
 
 mixin IndexedNavigatorStateMixin<T extends StatefulWidget> on State<T> {
   int currentIndex = 0;
-  final List<int> recentIndexs = [];
+  final List<int> recentIndexs = [0];
 
   void pushIndex(int index) {
     setState(() {

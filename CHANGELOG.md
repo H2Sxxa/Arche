@@ -1,3 +1,7 @@
+## 1.1.6
+
+ - Provide More Data to `NavigationView` `TransitionBuilder`
+
 ## 1.1.4~1.1.5
 
  -  Remove `FutureOr` and Add Some method to cans
