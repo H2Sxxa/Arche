@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Test"),
         ),
-        body: NavigationView.pageView(
+        body: NavigationView(
+          usePageView: true,
+          direction: Axis.vertical,
+          vertical: const NavigationVerticalConfig(useStack: true),
           items: [
             NavigationItem(
               icon: const Icon(Icons.home),

@@ -122,12 +122,15 @@ class NavigationVerticalConfig {
   final WidgetStateProperty<Color?>? overlayColor;
   final double? height;
   final Duration? animationDuration;
+  // Only available under default builder / on Bottom
+  final bool useStack;
   const NavigationVerticalConfig({
     this.shadowColor,
     this.overlayColor,
     this.surfaceTintColor,
     this.height,
     this.animationDuration,
+    this.useStack = false,
   });
 }
 
@@ -401,7 +404,16 @@ class NavigationViewState extends State<NavigationView>
       children = children.reversed.toList();
     }
 
-    return isHorizontal ? Row(children: children) : Column(children: children);
+    return isHorizontal
+        ? Row(children: children)
+        : state.widget.vertical?.useStack ?? false
+            ? SizedBox.expand(
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: children,
+                ),
+              )
+            : Column(children: children);
   }
 
   @override
@@ -429,27 +441,32 @@ class NavigationViewState extends State<NavigationView>
     return index;
   }
 
-  Widget get content => Expanded(
-        child: Padding(
-          padding: widget.items[currentIndex].padding ?? EdgeInsets.zero,
-          child: widget.usePageView
-              ? PageView(
-                  physics: const BouncingScrollPhysics(),
-                  controller: pageController,
-                  onPageChanged: (value) => super.pushIndex(value),
-                  children: widget.items.map((e) => e.page).toList(),
-                )
-              : AnimatedSwitcher(
-                  duration: widget.animationDuration ?? Durations.medium4,
-                  switchInCurve: widget.switchInCurve ?? Curves.linear,
-                  switchOutCurve: widget.switchOutCurve ?? Curves.linear,
-                  transitionBuilder: widget.transitionBuilder ??
-                      AnimatedSwitcher.defaultTransitionBuilder,
-                  layoutBuilder: widget.layoutBuilder ??
-                      AnimatedSwitcher.defaultLayoutBuilder,
-                  child: widget.items[currentIndex].page),
-        ),
-      );
+  Widget get content {
+    var child = Padding(
+      padding: widget.items[currentIndex].padding ?? EdgeInsets.zero,
+      child: widget.usePageView
+          ? PageView(
+              physics: const BouncingScrollPhysics(),
+              controller: pageController,
+              onPageChanged: (value) => super.pushIndex(value),
+              children: widget.items.map((e) => e.page).toList(),
+            )
+          : AnimatedSwitcher(
+              duration: widget.animationDuration ?? Durations.medium4,
+              switchInCurve: widget.switchInCurve ?? Curves.linear,
+              switchOutCurve: widget.switchOutCurve ?? Curves.linear,
+              transitionBuilder: widget.transitionBuilder ??
+                  AnimatedSwitcher.defaultTransitionBuilder,
+              layoutBuilder:
+                  widget.layoutBuilder ?? AnimatedSwitcher.defaultLayoutBuilder,
+              child: widget.items[currentIndex].page),
+    );
+    return widget.direction == Axis.vertical &&
+            (widget.vertical?.useStack ?? false)
+        ? child
+        : Expanded(child: child);
+  }
+
   @override
   Widget build(BuildContext context) {
     NavBuilder builder = widget.builder ?? defaultBuilder;
