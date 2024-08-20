@@ -1,3 +1,8 @@
+## 1.1.4~1.1.5
+
+ -  Remove `FutureOr` and Add Some method to cans
+ -  Add Support to NavigationView use `Stack` in Vertical
+
 ## 1.1.3
 
  - `config` bugfix

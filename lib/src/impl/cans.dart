@@ -11,6 +11,7 @@ class ConstCan<T> {
   T? get value => _fields[id.hashCode];
   set value(value) => _fields[id.hashCode] = value;
   Optional<T> get optValue => Optional(value: value);
+  T get valueAssert => value!;
 }
 
 class LazyConstCan<T> extends ConstCan<T> {
@@ -43,12 +44,18 @@ class FutureLazyConstCan<T> extends ConstCan<T> {
     return value!;
   }
 
-  FutureOr<T> getValue() async {
+  Future<T> getValue() async {
     if (value != null) {
       return value!;
     }
 
     return await reload();
+  }
+
+  Future<R> then<R>(
+    FutureOr<R> Function(T value) onValue,
+  ) async {
+    return onValue(await getValue());
   }
 
   Widget widgetBuilder(AsyncWidgetBuilder<T> builder, {bool refresh = false}) {
@@ -71,6 +78,7 @@ class DynamicCan<T> {
   T? value;
   DynamicCan([this.value]);
   Optional<T> get optValue => Optional(value: value);
+  T get valueAssert => value!;
 }
 
 class LazyDynamicCan<T> extends DynamicCan<T> {
@@ -96,12 +104,18 @@ class FutureLazyDynamicCan<T> extends DynamicCan<T> {
     return value!;
   }
 
-  FutureOr<T> getValue() async {
+  Future<T> getValue() async {
     if (value != null) {
       return value!;
     }
 
     return await reload();
+  }
+
+  Future<R> then<R>(
+    FutureOr<R> Function(T value) onValue,
+  ) async {
+    return onValue(await getValue());
   }
 
   Widget widgetBuilder(AsyncWidgetBuilder<T> builder, {bool refresh = false}) {
