@@ -30,10 +30,12 @@ void main() {
   });
 
   test("Can Dynamic Test", () {
-    LazyDynamicCan<int> can = LazyDynamicCan(builder: () {
-      debugWriteln("get 10");
-      return 10;
-    });
+    LazyDynamicCan<int> can = LazyDynamicCan(
+      builder: () {
+        debugWriteln("get 10");
+        return 10;
+      },
+    );
     debugWriteln(can.value);
     debugWriteln(can.value);
     debugWriteln(can.reload());

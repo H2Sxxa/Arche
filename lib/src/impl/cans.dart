@@ -60,9 +60,7 @@ class FutureLazyConstCan<T> extends ConstCan<T> {
     return await reload();
   }
 
-  Future<R> then<R>(
-    FutureOr<R> Function(T value) onValue,
-  ) async {
+  Future<R> then<R>(FutureOr<R> Function(T value) onValue) async {
     return onValue(await getValue());
   }
 
@@ -128,9 +126,7 @@ class FutureLazyDynamicCan<T> extends DynamicCan<T> {
     value = await builder();
   }
 
-  Future<R> then<R>(
-    FutureOr<R> Function(T value) onValue,
-  ) async {
+  Future<R> then<R>(FutureOr<R> Function(T value) onValue) async {
     return onValue(await getValue());
   }
 

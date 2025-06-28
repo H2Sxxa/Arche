@@ -12,7 +12,7 @@ abstract class AppConfigsBase {
   final ConfigEntryGenerator generator;
 
   AppConfigsBase(ArcheConfig config, [bool generateMap = false])
-      : generator = ConfigEntry.withConfig(config, generateMap: generateMap);
+    : generator = ConfigEntry.withConfig(config, generateMap: generateMap);
 }
 
 class ConfigEntry<V> with BaseIO<V>, AsyncBaseIO<V> {
@@ -112,8 +112,10 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>>
   late File _file;
 
   /// Read Only
-  ArcheConfig.memory(
-      {String init = "{}", MapSerializer<K, V, String>? serializer}) {
+  ArcheConfig.memory({
+    String init = "{}",
+    MapSerializer<K, V, String>? serializer,
+  }) {
     _memory = true;
 
     if (serializer != null) {
@@ -137,8 +139,11 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>>
   }
 
   /// Read / Write
-  ArcheConfig.path(String path,
-      {MapSerializer<K, V, String>? serializer, bool initSync = true}) {
+  ArcheConfig.path(
+    String path, {
+    MapSerializer<K, V, String>? serializer,
+    bool initSync = true,
+  }) {
     if (serializer != null) {
       this.serializer = serializer;
     }
@@ -152,8 +157,11 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>>
     }
   }
 
-  ArcheConfig.file(this._file,
-      {MapSerializer<K, V, String>? serializer, bool initSync = true}) {
+  ArcheConfig.file(
+    this._file, {
+    MapSerializer<K, V, String>? serializer,
+    bool initSync = true,
+  }) {
     if (serializer != null) {
       this.serializer = serializer;
     }

@@ -27,7 +27,8 @@ class ProgressIndicatorWidget extends StatefulWidget {
     ProgressIndicatorWidgetData data,
     ValueChanged<String?> updateText,
     ValueChanged<double?> updateProgress,
-  )? onInit;
+  )?
+  onInit;
 
   final Widget Function(ProgressIndicatorWidgetState state)? builder;
 
@@ -49,15 +50,9 @@ class ProgressIndicatorWidget extends StatefulWidget {
 class ProgressIndicatorWidgetData {
   final String? text;
   final double? progress;
-  const ProgressIndicatorWidgetData({
-    this.progress,
-    this.text,
-  });
+  const ProgressIndicatorWidgetData({this.progress, this.text});
 
-  ProgressIndicatorWidgetData copy({
-    double? progress,
-    String? text,
-  }) {
+  ProgressIndicatorWidgetData copy({double? progress, String? text}) {
     return ProgressIndicatorWidgetData(
       progress: progress ?? this.progress,
       text: text ?? this.text,
@@ -75,13 +70,13 @@ class ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget>
 
     data = widget.data;
     updateProgress(value) => refreshMountedFn(() {
-          data = widget.data.copy(progress: value);
-          widget.controller?.data = data;
-        });
+      data = widget.data.copy(progress: value);
+      widget.controller?.data = data;
+    });
     updateText(value) => refreshMountedFn(() {
-          data = widget.data.copy(text: value);
-          widget.controller?.data = data;
-        });
+      data = widget.data.copy(text: value);
+      widget.controller?.data = data;
+    });
     widget.controller?.updateProgress = updateProgress;
     widget.controller?.updateText = updateText;
     widget.controller?.data = data;
@@ -106,12 +101,8 @@ class ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               widget.useLinear
-                  ? LinearProgressIndicator(
-                      value: data.progress,
-                    )
-                  : CircularProgressIndicator(
-                      value: data.progress,
-                    ),
+                  ? LinearProgressIndicator(value: data.progress)
+                  : CircularProgressIndicator(value: data.progress),
               Visibility(
                 visible: data.text != null,
                 child: Padding(

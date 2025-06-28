@@ -11,8 +11,10 @@ extension ListExt<T> on List<T> {
     return this;
   }
 
-  static List<R> generateFrom<T, R>(Iterable<T> input,
-      {FunctionFactory<T, R>? functionFactory}) {
+  static List<R> generateFrom<T, R>(
+    Iterable<T> input, {
+    FunctionFactory<T, R>? functionFactory,
+  }) {
     List<R> res = [];
     for (var e in input) {
       res.add(functionFactory != null ? functionFactory(e) : e as R);

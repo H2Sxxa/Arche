@@ -34,10 +34,7 @@ class TypeProvider {
   }
 
   Widget toWidget(Widget child) {
-    return ValueWrapper(
-      this,
-      child: child,
-    );
+    return ValueWrapper(this, child: child);
   }
 }
 

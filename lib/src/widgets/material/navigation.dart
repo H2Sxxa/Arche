@@ -2,12 +2,13 @@ import 'package:arche/src/impl/optional.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-typedef NavBuilder = Widget Function(
-  BuildContext context,
-  Widget Function() vertical,
-  Widget Function() horizontal,
-  NavigationViewState state,
-);
+typedef NavBuilder =
+    Widget Function(
+      BuildContext context,
+      Widget Function() vertical,
+      Widget Function() horizontal,
+      NavigationViewState state,
+    );
 
 class HorizontalItemConfig {
   final Color? indicatorColor;
@@ -23,10 +24,7 @@ class HorizontalItemConfig {
 class VerticalItemConfig {
   final Key? key;
   final String? tooltip;
-  const VerticalItemConfig({
-    this.key,
-    this.tooltip,
-  });
+  const VerticalItemConfig({this.key, this.tooltip});
 }
 
 class NavigationItem {
@@ -85,11 +83,7 @@ class NavigationItem {
   }
 }
 
-enum NavigationLabelType {
-  none,
-  selected,
-  all,
-}
+enum NavigationLabelType { none, selected, all }
 
 class NavigationHorizontalConfig {
   final double? groupAlignment;
@@ -170,8 +164,12 @@ class NavigationView extends StatefulWidget {
 
   /// Available under `usePageView == false`, will override `transitionBuilder`
   final Widget Function(
-          int from, int to, Widget child, Animation<double> animation)?
-      transitionDetailsBuilder;
+    int from,
+    int to,
+    Widget child,
+    Animation<double> animation,
+  )?
+  transitionDetailsBuilder;
 
   const NavigationView({
     super.key,
@@ -221,8 +219,8 @@ class NavigationView extends StatefulWidget {
     this.showBar = true,
     this.onPageChanged,
     this.transitionDetailsBuilder,
-  })  : usePageView = false,
-        pageViewCurve = null;
+  }) : usePageView = false,
+       pageViewCurve = null;
 
   const NavigationView.pageView({
     super.key,
@@ -243,11 +241,11 @@ class NavigationView extends StatefulWidget {
     this.showBar = true,
     this.onPageChanged,
     this.transitionDetailsBuilder,
-  })  : usePageView = true,
-        switchInCurve = null,
-        switchOutCurve = null,
-        layoutBuilder = null,
-        transitionBuilder = null;
+  }) : usePageView = true,
+       switchInCurve = null,
+       switchOutCurve = null,
+       layoutBuilder = null,
+       transitionBuilder = null;
 
   @override
   State<StatefulWidget> createState() => NavigationViewState();
@@ -348,7 +346,8 @@ class NavigationViewState extends State<NavigationView>
         break;
     }
 
-    Widget? leading = config?.leading ??
+    Widget? leading =
+        config?.leading ??
         IconButton(
           onPressed: () => setState(() {
             extended = !extended;
@@ -406,7 +405,7 @@ class NavigationViewState extends State<NavigationView>
     var children = isHorizontal
         ? [
             Visibility(visible: state.widget.showBar, child: horizontal()),
-            state.content
+            state.content,
           ]
         : [
             state.content,
@@ -419,13 +418,10 @@ class NavigationViewState extends State<NavigationView>
     return isHorizontal
         ? Row(children: children)
         : state.widget.vertical?.useStack ?? false
-            ? SizedBox.expand(
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: children,
-                ),
-              )
-            : Column(children: children);
+        ? SizedBox.expand(
+            child: Stack(alignment: Alignment.bottomCenter, children: children),
+          )
+        : Column(children: children);
   }
 
   @override
@@ -457,7 +453,11 @@ class NavigationViewState extends State<NavigationView>
     var transition = AnimatedSwitcher.defaultTransitionBuilder;
     if (widget.transitionDetailsBuilder != null) {
       transition = (child, animation) => widget.transitionDetailsBuilder!(
-          recentIndexs.last, currentIndex, child, animation);
+        recentIndexs.last,
+        currentIndex,
+        child,
+        animation,
+      );
     } else if (widget.transitionBuilder != null) {
       transition = widget.transitionBuilder!;
     }
@@ -490,12 +490,7 @@ class NavigationViewState extends State<NavigationView>
   @override
   Widget build(BuildContext context) {
     NavBuilder builder = widget.builder ?? defaultBuilder;
-    return builder(
-      context,
-      _buildVertical,
-      _buildHorizontal,
-      this,
-    );
+    return builder(context, _buildVertical, _buildHorizontal, this);
   }
 }
 

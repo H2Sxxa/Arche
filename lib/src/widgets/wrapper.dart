@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-typedef ValueStateBuilderFunction<V, R> = R Function(
-    BuildContext context, ValueStateBuilderState<V> state);
+typedef ValueStateBuilderFunction<V, R> =
+    R Function(BuildContext context, ValueStateBuilderState<V> state);
 
 class ValueStateBuilder<V> extends StatefulWidget {
   final ValueStateBuilderFunction<V, Widget> builder;
@@ -64,14 +64,13 @@ class FutureResolver<T> extends StatelessWidget {
     Widget Function(T? value)? data,
     Widget Function(Object? error, StackTrace? stackTrace)? error,
     Widget? loading,
-  }) =>
-      FutureResolver(
-        key: key ?? this.key,
-        future: future ?? this.future,
-        data: data ?? this.data,
-        error: error ?? this.error,
-        loading: loading ?? this.loading,
-      );
+  }) => FutureResolver(
+    key: key ?? this.key,
+    future: future ?? this.future,
+    data: data ?? this.data,
+    error: error ?? this.error,
+    loading: loading ?? this.loading,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,9 @@ class FutureResolver<T> extends StatelessWidget {
 
         if (snapshot.hasError) {
           return (error ?? (error, stacktrace) => Text("$error\n$stacktrace"))(
-              snapshot.error, snapshot.stackTrace);
+            snapshot.error,
+            snapshot.stackTrace,
+          );
         }
 
         return loading ?? const SizedBox.shrink();

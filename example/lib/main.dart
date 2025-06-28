@@ -19,9 +19,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Test"),
-        ),
+        appBar: AppBar(title: const Text("Test")),
         body: NavigationView(
           transitionDetailsBuilder: (from, to, child, animation) {
             return AnimatedSwitcher.defaultTransitionBuilder(child, animation);
@@ -39,17 +37,18 @@ class MyApp extends StatelessWidget {
                     4,
                     (index) => Builder(
                       builder: (context) => FilledButton(
-                          child: const Text("hello"),
-                          onPressed: () => const ComplexDialog()
-                              .withContext(context: context)
-                            ..input(
-                              context: context,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                              ),
-                            ).then(debugWriteln)
-                            ..confirm(context: context).then(debugWriteln)
-                            ..license()),
+                        child: const Text("hello"),
+                        onPressed: () =>
+                            const ComplexDialog().withContext(context: context)
+                              ..input(
+                                context: context,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                              ).then(debugWriteln)
+                              ..confirm(context: context).then(debugWriteln)
+                              ..license(),
+                      ),
                     ),
                   ),
                 ),

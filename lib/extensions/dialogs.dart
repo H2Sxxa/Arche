@@ -10,21 +10,21 @@ extension Dialogs on ComplexDialog {
     Widget? icon,
     Widget? title,
   }) async {
-    return await withChild(AlertDialog(
-      title: title,
-      icon: icon,
-      content: Padding(
-        padding: const EdgeInsets.all(8),
-        child: content,
+    return await withChild(
+      AlertDialog(
+        title: title,
+        icon: icon,
+        content: Padding(padding: const EdgeInsets.all(8), child: content),
+        actions: [
+          TextButton(
+            onPressed: () => navigator(context).pop(),
+            child: Text(
+              MaterialLocalizations.of(context ?? this.context!).okButtonLabel,
+            ),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => navigator(context).pop(),
-          child: Text(
-              MaterialLocalizations.of(context ?? this.context!).okButtonLabel),
-        )
-      ],
-    )).prompt(context: context);
+    ).prompt(context: context);
   }
 
   Future<bool> confirm({
@@ -37,24 +37,23 @@ extension Dialogs on ComplexDialog {
   }) async {
     var locale = MaterialLocalizations.of(context ?? this.context!);
     var nav = navigator(context);
-    return await withChild(AlertDialog(
-          title: title,
-          icon: icon,
-          content: Padding(
-            padding: padding,
-            child: content,
+    return await withChild(
+          AlertDialog(
+            title: title,
+            icon: icon,
+            content: Padding(padding: padding, child: content),
+            actions: [
+              TextButton(
+                onPressed: () => nav.pop(true),
+                child: Text(locale.okButtonLabel),
+              ),
+              TextButton(
+                onPressed: () => nav.pop(false),
+                child: Text(locale.cancelButtonLabel),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => nav.pop(true),
-              child: Text(locale.okButtonLabel),
-            ),
-            TextButton(
-              onPressed: () => nav.pop(false),
-              child: Text(locale.cancelButtonLabel),
-            )
-          ],
-        )).prompt<bool>(context: context) ??
+        ).prompt<bool>(context: context) ??
         cancel;
   }
 
@@ -87,17 +86,19 @@ extension Dialogs on ComplexDialog {
         ),
         actions: [
           TextButton(
-              onPressed: () {
-                var text = ctrl.text;
-                if (text.isEmpty) {
-                  nav.pop(null);
-                } else {
-                  nav.pop(text);
-                }
-                ctrl.dispose();
-              },
-              child: Text(MaterialLocalizations.of(context ?? this.context!)
-                  .okButtonLabel))
+            onPressed: () {
+              var text = ctrl.text;
+              if (text.isEmpty) {
+                nav.pop(null);
+              } else {
+                nav.pop(text);
+              }
+              ctrl.dispose();
+            },
+            child: Text(
+              MaterialLocalizations.of(context ?? this.context!).okButtonLabel,
+            ),
+          ),
         ],
       ),
     ).prompt(context: context);
@@ -111,12 +112,14 @@ extension Dialogs on ComplexDialog {
     String? applicationLegalese,
     List<Widget>? children,
   }) async {
-    await withChild(AboutDialog(
-      applicationIcon: applicationIcon,
-      applicationLegalese: applicationLegalese,
-      applicationName: applicationName,
-      applicationVersion: applicationVersion,
-      children: children,
-    )).prompt(context: context);
+    await withChild(
+      AboutDialog(
+        applicationIcon: applicationIcon,
+        applicationLegalese: applicationLegalese,
+        applicationName: applicationName,
+        applicationVersion: applicationVersion,
+        children: children,
+      ),
+    ).prompt(context: context);
   }
 }
