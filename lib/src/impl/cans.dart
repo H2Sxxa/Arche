@@ -24,6 +24,10 @@ class LazyConstCan<T> extends ConstCan<T> {
     value = builder();
     return value;
   }
+
+  void update() {
+    value = builder();
+  }
 }
 
 class FutureLazyConstCan<T> extends ConstCan<T> {
@@ -42,6 +46,10 @@ class FutureLazyConstCan<T> extends ConstCan<T> {
     value = await builder();
 
     return value!;
+  }
+
+  Future<void> update() async {
+    value = await builder();
   }
 
   Future<T> getValue() async {
@@ -92,10 +100,14 @@ class LazyDynamicCan<T> extends DynamicCan<T> {
     value = builder();
     return value!;
   }
+
+  void update() async {
+    value = builder();
+  }
 }
 
 class FutureLazyDynamicCan<T> extends DynamicCan<T> {
-  final AsyncValueGetter builder;
+  final AsyncValueGetter<T> builder;
 
   FutureLazyDynamicCan({required this.builder});
 
@@ -110,6 +122,10 @@ class FutureLazyDynamicCan<T> extends DynamicCan<T> {
     }
 
     return await reload();
+  }
+
+  Future<void> update() async {
+    value = await builder();
   }
 
   Future<R> then<R>(
