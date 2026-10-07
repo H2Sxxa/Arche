@@ -1,7 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-typedef ValueStateBuilderFunction<V, R> =
-    R Function(BuildContext context, ValueStateBuilderState<V> state);
+typedef ValueStateBuilderFunction<V, R> = R Function(
+  BuildContext context,
+  ValueStateBuilderState<V> state,
+);
 
 class ValueStateBuilder<V> extends StatefulWidget {
   final ValueStateBuilderFunction<V, Widget> builder;

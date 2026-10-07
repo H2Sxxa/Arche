@@ -1,14 +1,14 @@
 import 'package:arche/src/impl/optional.dart';
 import 'package:material_ui/material_ui.dart';
+
 import 'dart:math' as math;
 
-typedef NavBuilder =
-    Widget Function(
-      BuildContext context,
-      Widget Function() vertical,
-      Widget Function() horizontal,
-      NavigationViewState state,
-    );
+typedef NavBuilder = Widget Function(
+  BuildContext context,
+  Widget Function() vertical,
+  Widget Function() horizontal,
+  NavigationViewState state,
+);
 
 class HorizontalItemConfig {
   final Color? indicatorColor;
