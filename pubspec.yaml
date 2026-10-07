@@ -17,7 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  test: ^1.32.0
+  test: 1.31.1
 
 
 # For information on the generic Dart part of this file, see the
