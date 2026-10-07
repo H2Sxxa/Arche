@@ -1,3 +1,7 @@
+## 1.3.0
+
+ - Migrate to `material_ui` package
+
 ## 1.1.6
 
  - Provide More Data to `NavigationView` `TransitionBuilder`

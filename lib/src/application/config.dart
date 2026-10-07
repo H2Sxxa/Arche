@@ -176,7 +176,7 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>>
   }
 
   void loads(String data) {
-    _internal.addAll(this.serializer.decode(data));
+    _internal.addAll(serializer.decode(data));
   }
 
   /// Write
@@ -195,13 +195,13 @@ class ArcheConfig<K, V> extends Subordinate<ArcheConfig<K, V>>
   /// Write
   void syncFrom() {
     if (!_memory) {
-      _internal.addAll(this.serializer.decode(_file.readAsStringSync()));
+      _internal.addAll(serializer.decode(_file.readAsStringSync()));
     }
   }
 
   FutureOr<void> syncFromAsync() async {
     if (!_memory) {
-      _internal.addAll(this.serializer.decode(await _file.readAsString()));
+      _internal.addAll(serializer.decode(await _file.readAsString()));
     }
   }
 
